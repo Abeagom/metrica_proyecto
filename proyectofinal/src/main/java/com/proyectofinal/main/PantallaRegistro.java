@@ -4,8 +4,11 @@
  */
 package com.proyectofinal.main;
 
+import com.proyectofinal.datos.DAOMaestros;
+import com.proyectofinal.entidades.Maestro;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -19,7 +22,6 @@ public class PantallaRegistro extends javax.swing.JFrame {
      */
     public PantallaRegistro() {
         initComponents();
-        
 
     }
 
@@ -122,7 +124,16 @@ public class PantallaRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearCuentaActionPerformed
-        // TODO add your handling code here:
+        if (campoNombreUsuario.getText().trim().isEmpty() | campoContraseña.getText().trim().isEmpty() | campoRepiteContraseña.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe rellenar todos los campos",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!campoContraseña.getText().equals(campoRepiteContraseña.getText())) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            DAOMaestros dm = new DAOMaestros();
+            dm.crearUsuario(new Maestro(campoNombreUsuario.getText(),campoContraseña.getText(), campoNombreUsuario.getText()));
+        }
     }//GEN-LAST:event_botonCrearCuentaActionPerformed
 
     private void campoNombreUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreUsuarioActionPerformed

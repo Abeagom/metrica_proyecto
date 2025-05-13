@@ -20,8 +20,8 @@ public class DAOMaestros {
 
     public Connection conectarBD() throws SQLException {
         DriverManager.registerDriver(new Driver());
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/educa+",
-                "educa+", "educa+");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/educaplus",
+                "educa", "educa");
         return conn;
     }
 
@@ -53,4 +53,22 @@ public class DAOMaestros {
 
         return m;
     }
+    
+        public void crearUsuario(Maestro m) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "Insert into maestros(login, password, nombre) values(?,?,?)");
+            pst.setString(1, m.getLogin());
+            pst.setString(2, m.getPassword());
+            pst.setString(3, m.getNombre());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("getMaestro:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+
 }

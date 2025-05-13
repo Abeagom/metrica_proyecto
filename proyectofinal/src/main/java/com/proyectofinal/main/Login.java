@@ -4,10 +4,6 @@
  */
 package com.proyectofinal.main;
 
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
-
 /**
  *
  * @author al_12
