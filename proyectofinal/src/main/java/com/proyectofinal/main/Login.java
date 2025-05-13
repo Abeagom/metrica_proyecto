@@ -46,6 +46,7 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.PNG"))); // NOI18N
         fondo.setText("jLabel1");
         jLayeredPane1.add(fondo);
         fondo.setBounds(0, 0, 760, 430);

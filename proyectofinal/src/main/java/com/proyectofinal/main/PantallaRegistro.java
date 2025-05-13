@@ -53,6 +53,7 @@ public class PantallaRegistro extends javax.swing.JFrame {
         jLayeredPane1.add(etiquetaTitulo);
         etiquetaTitulo.setBounds(90, 0, 390, 100);
 
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.PNG"))); // NOI18N
         fondo.setText("jLabel1");
         jLayeredPane1.add(fondo);
         fondo.setBounds(0, 0, 750, 430);
