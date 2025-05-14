@@ -5,12 +5,14 @@
 package com.proyectofinal.datos;
 
 import com.mysql.cj.jdbc.Driver;
+import com.mysql.cj.protocol.Resultset;
 import com.proyectofinal.entidades.Maestro;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -53,8 +55,8 @@ public class DAOMaestros {
 
         return m;
     }
-    
-        public void crearUsuario(Maestro m) {
+
+    public void crearUsuario(Maestro m) {
         Connection conn = null;
         try {
             conn = conectarBD();
@@ -65,10 +67,30 @@ public class DAOMaestros {
             pst.setString(3, m.getNombre());
             pst.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("getMaestro:" + e.getMessage());
+            System.err.println("crearUsuario:" + e.getMessage());
         } finally {
             desconectarBD(conn);
         }
+    }
+
+    public boolean comprobarUsuario(String nombreUsuario) {
+        Connection conn = null;
+        boolean existe = false;
+        try {
+            conn = conectarBD();
+            Statement stm = conn.createStatement();
+            ResultSet resultset = stm.executeQuery("select login from maestros");
+            while (resultset.next()){
+                if(resultset.getString("login").equals(nombreUsuario)){
+                    existe=true;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("crearUsuario:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+        return existe;
     }
 
 }
