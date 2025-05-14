@@ -139,9 +139,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_botonInicioSesionActionPerformed
 
     private void botonCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearUsuarioActionPerformed
-        PantallaRegistro pantallaRegistro = new PantallaRegistro();
-        dispose();
-        pantallaRegistro.setVisible(true);
+        new PantallaRegistro(this, true).setVisible(true);
     }//GEN-LAST:event_botonCrearUsuarioActionPerformed
 
     /**
