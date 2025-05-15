@@ -4,6 +4,10 @@
  */
 package com.proyectofinal.main;
 
+import com.proyectofinal.datos.DAOMaestros;
+import com.proyectofinal.entidades.Maestro;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author al_12
@@ -15,7 +19,6 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        
 
     }
 
@@ -135,7 +138,24 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_campoContraseñaActionPerformed
 
     private void botonInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInicioSesionActionPerformed
-        // TODO add your handling code here:
+        String login = campoNombreUsuario.getText().trim();
+        String password = campoContraseña.getText().trim();
+        if (login.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Debe especificar usuario y contraseña", "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        DAOMaestros du = new DAOMaestros();
+        Maestro maestro = du.getUsuario(login);
+        if (maestro == null || !password.equals(maestro.getPassword())) {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            VentanaPrincipal principal = new VentanaPrincipal(maestro);
+            dispose();
+            principal.setVisible(true);
+        }
     }//GEN-LAST:event_botonInicioSesionActionPerformed
 
     private void botonCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearUsuarioActionPerformed

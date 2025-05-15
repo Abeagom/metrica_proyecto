@@ -5,7 +5,6 @@
 package com.proyectofinal.datos;
 
 import com.mysql.cj.jdbc.Driver;
-import com.mysql.cj.protocol.Resultset;
 import com.proyectofinal.entidades.Maestro;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -46,6 +45,8 @@ public class DAOMaestros {
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 m = new Maestro(login, rs.getString("password"), rs.getString("nombre"));
+                DAOAsignaturas da = new DAOAsignaturas();
+                m.setAsignaturas(da.getAsignaturasDeMaestro(m));
             }
         } catch (SQLException e) {
             System.err.println("getMaestro:" + e.getMessage());
