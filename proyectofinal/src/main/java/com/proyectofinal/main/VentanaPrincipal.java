@@ -18,7 +18,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal(Maestro maestro) {
         initComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        etiquetaBienvenida.setText("Bienvenid@, nombreMaestro");
 
     }
 
@@ -33,12 +33,118 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jLayeredPane1 = new javax.swing.JLayeredPane();
         fondo = new javax.swing.JLabel();
+        etiquetaBienvenida = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaAsignaturas = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tablaTemas = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tablaActividades = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoPrincipal.jpg"))); // NOI18N
         jLayeredPane1.add(fondo);
-        fondo.setBounds(-10, -160, 1570, 890);
+        fondo.setBounds(-10, -160, 1570, 1050);
+
+        etiquetaBienvenida.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
+        etiquetaBienvenida.setForeground(new java.awt.Color(51, 51, 255));
+        etiquetaBienvenida.setText("Bienvenid@, ");
+        jLayeredPane1.setLayer(etiquetaBienvenida, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane1.add(etiquetaBienvenida);
+        etiquetaBienvenida.setBounds(90, 30, 520, 80);
+
+        tablaAsignaturas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Asignaturas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaAsignaturas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAsignaturasMouseClicked(evt);
+            }
+        });
+        tablaAsignaturas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tablaAsignaturasKeyReleased(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tablaAsignaturas);
+        if (tablaAsignaturas.getColumnModel().getColumnCount() > 0) {
+            tablaAsignaturas.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLayeredPane1.setLayer(jScrollPane4, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane1.add(jScrollPane4);
+        jScrollPane4.setBounds(80, 230, 400, 480);
+
+        tablaTemas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Temas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tablaTemas);
+        if (tablaTemas.getColumnModel().getColumnCount() > 0) {
+            tablaTemas.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLayeredPane1.setLayer(jScrollPane5, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane1.add(jScrollPane5);
+        jScrollPane5.setBounds(560, 230, 400, 480);
+
+        tablaActividades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Asignaturas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(tablaActividades);
+        if (tablaActividades.getColumnModel().getColumnCount() > 0) {
+            tablaActividades.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLayeredPane1.setLayer(jScrollPane6, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane1.add(jScrollPane6);
+        jScrollPane6.setBounds(1050, 230, 400, 480);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -53,6 +159,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tablaAsignaturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAsignaturasMouseClicked
+        int indice = tablaAsignaturas.getSelectedRow();
+        if(indice !=-1){
+            
+        }
+    }//GEN-LAST:event_tablaAsignaturasMouseClicked
+
+    private void tablaAsignaturasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaAsignaturasKeyReleased
+        tablaAsignaturasMouseClicked(null);
+    }//GEN-LAST:event_tablaAsignaturasKeyReleased
 
     /**
      * @param args the command line arguments
@@ -90,7 +207,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel etiquetaBienvenida;
     private javax.swing.JLabel fondo;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTable tablaActividades;
+    private javax.swing.JTable tablaAsignaturas;
+    private javax.swing.JTable tablaTemas;
     // End of variables declaration//GEN-END:variables
 }
