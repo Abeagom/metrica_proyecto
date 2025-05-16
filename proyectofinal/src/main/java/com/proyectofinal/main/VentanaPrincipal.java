@@ -31,6 +31,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane2 = new javax.swing.JTabbedPane();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         fondo = new javax.swing.JLabel();
         etiquetaBienvenida = new javax.swing.JLabel();
@@ -40,6 +41,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         tablaTemas = new javax.swing.JTable();
         jScrollPane6 = new javax.swing.JScrollPane();
         tablaActividades = new javax.swing.JTable();
+        jLayeredPane3 = new javax.swing.JLayeredPane();
+        fondo2 = new javax.swing.JLabel();
+        etiquetaBienvenida2 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tablaAsignaturas2 = new javax.swing.JTable();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tablaTemas2 = new javax.swing.JTable();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        tablaActividades2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -146,15 +156,118 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLayeredPane1.add(jScrollPane6);
         jScrollPane6.setBounds(1050, 230, 400, 480);
 
+        jTabbedPane2.addTab("Ventana Principal", jLayeredPane1);
+
+        fondo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoPrincipal.jpg"))); // NOI18N
+        jLayeredPane3.add(fondo2);
+        fondo2.setBounds(-10, -160, 1570, 1050);
+
+        etiquetaBienvenida2.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
+        etiquetaBienvenida2.setForeground(new java.awt.Color(51, 51, 255));
+        etiquetaBienvenida2.setText("Bienvenid@, ");
+        jLayeredPane3.setLayer(etiquetaBienvenida2, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane3.add(etiquetaBienvenida2);
+        etiquetaBienvenida2.setBounds(90, 30, 520, 80);
+
+        tablaAsignaturas2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Asignaturas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaAsignaturas2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAsignaturas2MouseClicked(evt);
+            }
+        });
+        tablaAsignaturas2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tablaAsignaturas2KeyReleased(evt);
+            }
+        });
+        jScrollPane10.setViewportView(tablaAsignaturas2);
+        if (tablaAsignaturas2.getColumnModel().getColumnCount() > 0) {
+            tablaAsignaturas2.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLayeredPane3.setLayer(jScrollPane10, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane3.add(jScrollPane10);
+        jScrollPane10.setBounds(80, 230, 400, 480);
+
+        tablaTemas2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Temas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(tablaTemas2);
+        if (tablaTemas2.getColumnModel().getColumnCount() > 0) {
+            tablaTemas2.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLayeredPane3.setLayer(jScrollPane11, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane3.add(jScrollPane11);
+        jScrollPane11.setBounds(560, 230, 400, 480);
+
+        tablaActividades2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Asignaturas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane12.setViewportView(tablaActividades2);
+        if (tablaActividades2.getColumnModel().getColumnCount() > 0) {
+            tablaActividades2.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLayeredPane3.setLayer(jScrollPane12, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jLayeredPane3.add(jScrollPane12);
+        jScrollPane12.setBounds(1050, 230, 400, 480);
+
+        jTabbedPane2.addTab("Calendario de actividades", jLayeredPane3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1552, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1552, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
         );
 
         pack();
@@ -169,7 +282,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void tablaAsignaturasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaAsignaturasKeyReleased
         tablaAsignaturasMouseClicked(null);
+        if(evt.getKeyCode()==1){
+            
+        }
     }//GEN-LAST:event_tablaAsignaturasKeyReleased
+
+    private void tablaAsignaturas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAsignaturas2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaAsignaturas2MouseClicked
+
+    private void tablaAsignaturas2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaAsignaturas2KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaAsignaturas2KeyReleased
 
     /**
      * @param args the command line arguments
@@ -208,13 +332,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel etiquetaBienvenida;
+    private javax.swing.JLabel etiquetaBienvenida2;
     private javax.swing.JLabel fondo;
+    private javax.swing.JLabel fondo2;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLayeredPane jLayeredPane3;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable tablaActividades;
+    private javax.swing.JTable tablaActividades2;
     private javax.swing.JTable tablaAsignaturas;
+    private javax.swing.JTable tablaAsignaturas2;
     private javax.swing.JTable tablaTemas;
+    private javax.swing.JTable tablaTemas2;
     // End of variables declaration//GEN-END:variables
 }
