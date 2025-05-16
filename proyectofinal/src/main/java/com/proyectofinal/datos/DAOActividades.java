@@ -45,7 +45,7 @@ public class DAOActividades {
                     "select * from actividades WHERE id_tema = ?");
             pst.setInt(1, t.getId());
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 Actividad a = new Actividad(rs.getInt("id"), rs.getString("nombre"), rs.getString("descripcion"), rs.getString("objetivos"), t);
                 actividades.add(a);
             }

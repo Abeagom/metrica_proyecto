@@ -3,6 +3,8 @@
  */
 package com.proyectofinal.entidades;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author al_12
@@ -14,6 +16,7 @@ public class Actividad {
     private String descripcion;
     private String objetivos;
     private Tema tema;
+    LocalDate fecha;
 
     public Actividad(int id, String nombre, String descripcion, String objetivos, Tema tema) {
         this.id = id;
@@ -21,6 +24,7 @@ public class Actividad {
         this.descripcion = descripcion;
         this.objetivos = objetivos;
         this.tema = tema;
+        this.fecha=null;
     }
 
     public int getId() {
@@ -62,6 +66,15 @@ public class Actividad {
     public void setTema(Tema tema) {
         this.tema = tema;
     }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+    
 
     @Override
     public int hashCode() {

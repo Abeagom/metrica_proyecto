@@ -87,7 +87,7 @@ public class DAOMaestros {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("crearUsuario:" + e.getMessage());
+            System.err.println("comprobarUsuario:" + e.getMessage());
         } finally {
             desconectarBD(conn);
         }

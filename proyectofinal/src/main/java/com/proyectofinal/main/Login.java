@@ -45,10 +45,10 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.PNG"))); // NOI18N
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.jpg"))); // NOI18N
         fondo.setText("jLabel1");
         jLayeredPane1.add(fondo);
-        fondo.setBounds(0, 0, 760, 430);
+        fondo.setBounds(-80, 0, 840, 430);
 
         etiquetaNombreUsuario.setBackground(new java.awt.Color(255, 255, 255));
         etiquetaNombreUsuario.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -85,7 +85,7 @@ public class Login extends javax.swing.JFrame {
         etiquetaCopyright.setText("© 2025 Educa+. Versión 0.1 (Beta). Todos los derechos reservados.");
         jLayeredPane1.setLayer(etiquetaCopyright, javax.swing.JLayeredPane.PALETTE_LAYER);
         jLayeredPane1.add(etiquetaCopyright);
-        etiquetaCopyright.setBounds(20, 400, 410, 17);
+        etiquetaCopyright.setBounds(20, 400, 410, 16);
 
         etiquetaTitulo.setFont(new java.awt.Font("Segoe UI Black", 1, 72)); // NOI18N
         etiquetaTitulo.setText("Educa+");

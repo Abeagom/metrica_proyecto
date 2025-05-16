@@ -4,8 +4,13 @@
  */
 package com.proyectofinal.main;
 
+import com.proyectofinal.datos.DAOMaestros;
+import com.proyectofinal.entidades.Asignatura;
 import com.proyectofinal.entidades.Maestro;
-import javax.swing.JFrame;
+import java.awt.PopupMenu;
+import java.util.stream.Collectors;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,13 +18,29 @@ import javax.swing.JFrame;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    Maestro m;
+    private DefaultListModel<String> modeloListaAsignaturas = new DefaultListModel<>();
+
     /**
      * Creates new form VentanaPrincipal
      */
-    public VentanaPrincipal(Maestro maestro) {
+    public VentanaPrincipal(Maestro m) {
+        this.m = m;
         initComponents();
-        etiquetaBienvenida.setText("Bienvenid@, nombreMaestro");
+        listaAsignaturas.setModel(modeloListaAsignaturas);
+        for (Asignatura a : m.getAsignaturas()) {
+            modeloListaAsignaturas.addElement(a.getNombre());
+        }
 
+        editarAsignatura.setEnabled(false);
+        eliminarAsignatura.setEnabled(false);
+        añadirTema.setEnabled(false);
+        editarTema.setEnabled(false);
+        eliminarTema.setEnabled(false);
+        añadirActividad.setEnabled(false);
+        editarActividad.setEnabled(false);
+        eliminarActividad.setEnabled(false);
+        etiquetaBienvenida.setText("Usuario " + m.getLogin());
     }
 
     /**
@@ -31,269 +52,273 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
-        fondo = new javax.swing.JLabel();
+        pestañas = new javax.swing.JTabbedPane();
+        pestañaPrincipal = new javax.swing.JPanel();
+        añadirAsignatura = new javax.swing.JButton();
+        editarAsignatura = new javax.swing.JButton();
+        añadirTema = new javax.swing.JButton();
+        editarTema = new javax.swing.JButton();
+        añadirActividad = new javax.swing.JButton();
+        editarActividad = new javax.swing.JButton();
+        eliminarAsignatura = new javax.swing.JButton();
+        eliminarTema = new javax.swing.JButton();
+        eliminarActividad = new javax.swing.JButton();
         etiquetaBienvenida = new javax.swing.JLabel();
+        etiquetaCopyright = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tablaAsignaturas = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        tablaTemas = new javax.swing.JTable();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tablaActividades = new javax.swing.JTable();
-        jLayeredPane3 = new javax.swing.JLayeredPane();
-        fondo2 = new javax.swing.JLabel();
-        etiquetaBienvenida2 = new javax.swing.JLabel();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        tablaAsignaturas2 = new javax.swing.JTable();
-        jScrollPane11 = new javax.swing.JScrollPane();
-        tablaTemas2 = new javax.swing.JTable();
-        jScrollPane12 = new javax.swing.JScrollPane();
-        tablaActividades2 = new javax.swing.JTable();
+        listaAsignaturas = new javax.swing.JList<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaTemas = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaActividades = new javax.swing.JList<>();
+        pestañaCalendario = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
-        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoPrincipal.jpg"))); // NOI18N
-        jLayeredPane1.add(fondo);
-        fondo.setBounds(-10, -160, 1570, 1050);
+        pestañaPrincipal.setBackground(new java.awt.Color(193, 239, 255));
 
-        etiquetaBienvenida.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
-        etiquetaBienvenida.setForeground(new java.awt.Color(51, 51, 255));
-        etiquetaBienvenida.setText("Bienvenid@, ");
-        jLayeredPane1.setLayer(etiquetaBienvenida, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane1.add(etiquetaBienvenida);
-        etiquetaBienvenida.setBounds(90, 30, 520, 80);
-
-        tablaAsignaturas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Asignaturas"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        añadirAsignatura.setText("Añadir asignatura");
+        añadirAsignatura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirAsignaturaActionPerformed(evt);
             }
         });
-        tablaAsignaturas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaAsignaturasMouseClicked(evt);
+
+        editarAsignatura.setText("Editar asignatura");
+        editarAsignatura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarAsignaturaActionPerformed(evt);
             }
         });
-        tablaAsignaturas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tablaAsignaturasKeyReleased(evt);
+
+        añadirTema.setText("Añadir tema");
+        añadirTema.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirTemaActionPerformed(evt);
             }
         });
-        jScrollPane4.setViewportView(tablaAsignaturas);
-        if (tablaAsignaturas.getColumnModel().getColumnCount() > 0) {
-            tablaAsignaturas.getColumnModel().getColumn(0).setResizable(false);
-        }
 
-        jLayeredPane1.setLayer(jScrollPane4, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane1.add(jScrollPane4);
-        jScrollPane4.setBounds(80, 230, 400, 480);
-
-        tablaTemas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Temas"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        editarTema.setText("Editar tema");
+        editarTema.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarTemaActionPerformed(evt);
             }
         });
-        jScrollPane5.setViewportView(tablaTemas);
-        if (tablaTemas.getColumnModel().getColumnCount() > 0) {
-            tablaTemas.getColumnModel().getColumn(0).setResizable(false);
-        }
 
-        jLayeredPane1.setLayer(jScrollPane5, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane1.add(jScrollPane5);
-        jScrollPane5.setBounds(560, 230, 400, 480);
-
-        tablaActividades.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Asignaturas"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        añadirActividad.setText("Añadir Actividad");
+        añadirActividad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirActividadActionPerformed(evt);
             }
         });
-        jScrollPane6.setViewportView(tablaActividades);
-        if (tablaActividades.getColumnModel().getColumnCount() > 0) {
-            tablaActividades.getColumnModel().getColumn(0).setResizable(false);
-        }
 
-        jLayeredPane1.setLayer(jScrollPane6, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane1.add(jScrollPane6);
-        jScrollPane6.setBounds(1050, 230, 400, 480);
-
-        jTabbedPane2.addTab("Ventana Principal", jLayeredPane1);
-
-        fondo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoPrincipal.jpg"))); // NOI18N
-        jLayeredPane3.add(fondo2);
-        fondo2.setBounds(-10, -160, 1570, 1050);
-
-        etiquetaBienvenida2.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
-        etiquetaBienvenida2.setForeground(new java.awt.Color(51, 51, 255));
-        etiquetaBienvenida2.setText("Bienvenid@, ");
-        jLayeredPane3.setLayer(etiquetaBienvenida2, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane3.add(etiquetaBienvenida2);
-        etiquetaBienvenida2.setBounds(90, 30, 520, 80);
-
-        tablaAsignaturas2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Asignaturas"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        editarActividad.setText("Editar actividad");
+        editarActividad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActividadActionPerformed(evt);
             }
         });
-        tablaAsignaturas2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaAsignaturas2MouseClicked(evt);
+
+        eliminarAsignatura.setText("Eliminar asignatura");
+        eliminarAsignatura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarAsignaturaActionPerformed(evt);
             }
         });
-        tablaAsignaturas2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tablaAsignaturas2KeyReleased(evt);
+
+        eliminarTema.setText("Eliminar tema");
+        eliminarTema.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarTemaActionPerformed(evt);
             }
         });
-        jScrollPane10.setViewportView(tablaAsignaturas2);
-        if (tablaAsignaturas2.getColumnModel().getColumnCount() > 0) {
-            tablaAsignaturas2.getColumnModel().getColumn(0).setResizable(false);
-        }
 
-        jLayeredPane3.setLayer(jScrollPane10, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane3.add(jScrollPane10);
-        jScrollPane10.setBounds(80, 230, 400, 480);
-
-        tablaTemas2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Temas"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        eliminarActividad.setText("Eliminar actividad");
+        eliminarActividad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActividadActionPerformed(evt);
             }
         });
-        jScrollPane11.setViewportView(tablaTemas2);
-        if (tablaTemas2.getColumnModel().getColumnCount() > 0) {
-            tablaTemas2.getColumnModel().getColumn(0).setResizable(false);
-        }
 
-        jLayeredPane3.setLayer(jScrollPane11, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane3.add(jScrollPane11);
-        jScrollPane11.setBounds(560, 230, 400, 480);
+        etiquetaBienvenida.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
 
-        tablaActividades2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Asignaturas"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
+        etiquetaCopyright.setText("© 2025 Educa+. Versión 0.1 (Beta). Todos los derechos reservados.");
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
+        listaAsignaturas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane4.setViewportView(listaAsignaturas);
+
+        listaTemas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane12.setViewportView(tablaActividades2);
-        if (tablaActividades2.getColumnModel().getColumnCount() > 0) {
-            tablaActividades2.getColumnModel().getColumn(0).setResizable(false);
-        }
+        listaTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(listaTemas);
 
-        jLayeredPane3.setLayer(jScrollPane12, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane3.add(jScrollPane12);
-        jScrollPane12.setBounds(1050, 230, 400, 480);
+        listaActividades.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        listaActividades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(listaActividades);
 
-        jTabbedPane2.addTab("Calendario de actividades", jLayeredPane3);
+        javax.swing.GroupLayout pestañaPrincipalLayout = new javax.swing.GroupLayout(pestañaPrincipal);
+        pestañaPrincipal.setLayout(pestañaPrincipalLayout);
+        pestañaPrincipalLayout.setHorizontalGroup(
+            pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                        .addComponent(etiquetaCopyright, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(50, 50, 50))
+                    .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                        .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(añadirAsignatura, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(editarAsignatura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(eliminarAsignatura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                                .addGap(158, 158, 158)
+                                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(editarTema, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(eliminarTema, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(133, 133, 133)
+                                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(editarActividad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(eliminarActividad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(113, Short.MAX_VALUE))
+                            .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(añadirTema, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1))
+                                .addGap(133, 133, 133)
+                                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(añadirActividad, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane2))
+                                .addGap(113, 113, 113))))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestañaPrincipalLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(etiquetaBienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(73, 73, 73))
+        );
+        pestañaPrincipalLayout.setVerticalGroup(
+            pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                .addComponent(etiquetaBienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
+                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane4)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(añadirTema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(añadirAsignatura)
+                    .addComponent(añadirActividad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarAsignatura)
+                    .addGroup(pestañaPrincipalLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(editarActividad))
+                    .addComponent(editarTema))
+                .addGap(8, 8, 8)
+                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(eliminarAsignatura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(eliminarActividad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(eliminarTema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(etiquetaCopyright, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        pestañas.addTab("Principal", pestañaPrincipal);
+
+        pestañaCalendario.setBackground(new java.awt.Color(255, 225, 231));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jLabel2.setText("Educa+");
+
+        javax.swing.GroupLayout pestañaCalendarioLayout = new javax.swing.GroupLayout(pestañaCalendario);
+        pestañaCalendario.setLayout(pestañaCalendarioLayout);
+        pestañaCalendarioLayout.setHorizontalGroup(
+            pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 806, Short.MAX_VALUE))
+        );
+        pestañaCalendarioLayout.setVerticalGroup(
+            pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 459, Short.MAX_VALUE))
+        );
+
+        pestañas.addTab("Calendario", pestañaCalendario);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1552, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pestañas)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pestañas)
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tablaAsignaturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAsignaturasMouseClicked
-        int indice = tablaAsignaturas.getSelectedRow();
-        if(indice !=-1){
-            
-        }
-    }//GEN-LAST:event_tablaAsignaturasMouseClicked
-
-    private void tablaAsignaturasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaAsignaturasKeyReleased
-        tablaAsignaturasMouseClicked(null);
-        if(evt.getKeyCode()==1){
-            
-        }
-    }//GEN-LAST:event_tablaAsignaturasKeyReleased
-
-    private void tablaAsignaturas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAsignaturas2MouseClicked
+    private void eliminarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActividadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tablaAsignaturas2MouseClicked
+    }//GEN-LAST:event_eliminarActividadActionPerformed
 
-    private void tablaAsignaturas2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaAsignaturas2KeyReleased
+    private void eliminarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTemaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tablaAsignaturas2KeyReleased
+    }//GEN-LAST:event_eliminarTemaActionPerformed
+
+    private void eliminarAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarAsignaturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eliminarAsignaturaActionPerformed
+
+    private void editarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActividadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarActividadActionPerformed
+
+    private void añadirActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirActividadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirActividadActionPerformed
+
+    private void editarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarTemaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarTemaActionPerformed
+
+    private void añadirTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirTemaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirTemaActionPerformed
+
+    private void editarAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarAsignaturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarAsignaturaActionPerformed
+
+    private void añadirAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirAsignaturaActionPerformed
+        new AñadirAsignatura(this, true, m).setVisible(true);
+        modeloListaAsignaturas.clear();
+        modeloListaAsignaturas.addAll(m.getAsignaturas().stream().map(a -> a.getNombre()).collect(Collectors.toList()));
+
+    }//GEN-LAST:event_añadirAsignaturaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,24 +356,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton añadirActividad;
+    private javax.swing.JButton añadirAsignatura;
+    private javax.swing.JButton añadirTema;
+    private javax.swing.JButton editarActividad;
+    private javax.swing.JButton editarAsignatura;
+    private javax.swing.JButton editarTema;
+    private javax.swing.JButton eliminarActividad;
+    private javax.swing.JButton eliminarAsignatura;
+    private javax.swing.JButton eliminarTema;
     private javax.swing.JLabel etiquetaBienvenida;
-    private javax.swing.JLabel etiquetaBienvenida2;
-    private javax.swing.JLabel fondo;
-    private javax.swing.JLabel fondo2;
-    private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JLayeredPane jLayeredPane3;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
-    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JLabel etiquetaCopyright;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable tablaActividades;
-    private javax.swing.JTable tablaActividades2;
-    private javax.swing.JTable tablaAsignaturas;
-    private javax.swing.JTable tablaAsignaturas2;
-    private javax.swing.JTable tablaTemas;
-    private javax.swing.JTable tablaTemas2;
+    private javax.swing.JList<String> listaActividades;
+    private javax.swing.JList<String> listaAsignaturas;
+    private javax.swing.JList<String> listaTemas;
+    private javax.swing.JPanel pestañaCalendario;
+    private javax.swing.JPanel pestañaPrincipal;
+    private javax.swing.JTabbedPane pestañas;
     // End of variables declaration//GEN-END:variables
 }

@@ -47,7 +47,7 @@ public class DAOAsignaturas {
                     "select * from asignaturas WHERE login_maestro = ?");
             pst.setString(1, m.getLogin());
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 Asignatura a = new Asignatura(rs.getInt("id"), rs.getString("nombre"), m);
                 a.setTemas(dt.getTemasPorAsignatura(a));
                 asignaturas.add(a);
@@ -60,5 +60,43 @@ public class DAOAsignaturas {
 
         return asignaturas;
     }
+
+    public void añadirAsignatura(String nombre, Maestro m) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "Insert into asignaturas(nombre, login_maestro) values(?,?)");
+            pst.setString(1, nombre);
+            pst.setString(2, m.getLogin());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("añadirAsignatura:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+    /*
+        public boolean comprobarAsignaturas(String nombreAsignatura, Maestro m) {
+        Connection conn = null;
+        boolean existe = false;
+        try {
+            conn = conectarBD();
+            PreparedStatement stm = conn.prepareStatement("select nombre from asignaturas where login_maestro=?");
+            stm.setString(1, m.getLogin());
+            ResultSet resultset = stm.executeQuery();
+            while (resultset.next()){
+                if(resultset.getString("nombre").equalsIgnoreCase(nombreAsignatura)){
+                    existe=true;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("comprobarAsignatura:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+        return existe;
+    }
+     */
 
 }

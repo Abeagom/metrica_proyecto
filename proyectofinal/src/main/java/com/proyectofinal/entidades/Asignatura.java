@@ -23,6 +23,11 @@ public class Asignatura {
         temas = new ArrayList();
     }
 
+    public Asignatura(String nombre, Maestro maestro) {
+        this.nombre=nombre;
+        this.maestro=maestro;
+    }
+
     public int getId() {
         return id;
     }

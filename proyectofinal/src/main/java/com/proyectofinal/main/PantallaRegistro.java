@@ -59,10 +59,10 @@ public class PantallaRegistro extends javax.swing.JDialog {
         jLayeredPane1.add(etiquetaTitulo);
         etiquetaTitulo.setBounds(90, 0, 390, 100);
 
-        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.PNG"))); // NOI18N
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.jpg"))); // NOI18N
         fondo.setText("jLabel1");
         jLayeredPane1.add(fondo);
-        fondo.setBounds(0, 0, 750, 430);
+        fondo.setBounds(-80, 0, 830, 430);
 
         etiquetaNombre.setBackground(new java.awt.Color(255, 255, 255));
         etiquetaNombre.setText("Nombre");
@@ -150,11 +150,14 @@ public class PantallaRegistro extends javax.swing.JDialog {
         } else if (!campoContraseña.getText().equals(campoRepiteContraseña.getText())) {
             JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden",
                     "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (!dm.comprobarUsuario(campoNombreUsuario.getText().trim())) {
+        } else if (dm.comprobarUsuario(campoNombreUsuario.getText().trim())) {
             JOptionPane.showMessageDialog(this, "El usuario ya existe",
                     "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             dm.crearUsuario(new Maestro(campoNombreUsuario.getText(), campoContraseña.getText(), campoNombre.getText()));
+            JOptionPane.showMessageDialog(this, "Usuario creado correctamente",
+                    "Registro correcto", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
         }
     }//GEN-LAST:event_botonCrearCuentaActionPerformed
 

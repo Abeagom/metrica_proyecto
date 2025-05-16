@@ -47,7 +47,7 @@ public class DAOTemas {
                     "select * from temas WHERE id_asignatura = ?");
             pst.setInt(1, a.getId());
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 Tema t = new Tema(rs.getInt("id"), rs.getString("nombre"), a);
                 temas.add(t);
             }
