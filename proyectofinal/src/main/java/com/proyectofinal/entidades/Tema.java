@@ -75,6 +75,13 @@ public class Tema {
         final Tema other = (Tema) obj;
         return this.id == other.id;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+    
+    
     
     
     

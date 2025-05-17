@@ -66,10 +66,16 @@ public class DAOAsignaturas {
         try {
             conn = conectarBD();
             PreparedStatement pst = conn.prepareStatement(
-                    "Insert into asignaturas(nombre, login_maestro) values(?,?)");
+                    "Insert into asignaturas(nombre, login_maestro) values(?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, nombre);
             pst.setString(2, m.getLogin());
             pst.executeUpdate();
+            ResultSet claveGenerada = pst.getGeneratedKeys();
+            if (claveGenerada.next()) {
+                m.getAsignaturas().add(new Asignatura(claveGenerada.getInt(1), nombre, m));
+            }
+
         } catch (SQLException e) {
             System.err.println("añadirAsignatura:" + e.getMessage());
         } finally {

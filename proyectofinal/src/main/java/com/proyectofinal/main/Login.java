@@ -6,6 +6,7 @@ package com.proyectofinal.main;
 
 import com.proyectofinal.datos.DAOMaestros;
 import com.proyectofinal.entidades.Maestro;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -69,6 +70,11 @@ public class Login extends javax.swing.JFrame {
                 campoNombreUsuarioActionPerformed(evt);
             }
         });
+        campoNombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoNombreUsuarioKeyPressed(evt);
+            }
+        });
         jLayeredPane1.setLayer(campoNombreUsuario, javax.swing.JLayeredPane.PALETTE_LAYER);
         jLayeredPane1.add(campoNombreUsuario);
         campoNombreUsuario.setBounds(90, 140, 300, 40);
@@ -76,6 +82,11 @@ public class Login extends javax.swing.JFrame {
         campoContraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoContraseñaActionPerformed(evt);
+            }
+        });
+        campoContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoContraseñaKeyPressed(evt);
             }
         });
         jLayeredPane1.setLayer(campoContraseña, javax.swing.JLayeredPane.PALETTE_LAYER);
@@ -161,6 +172,18 @@ public class Login extends javax.swing.JFrame {
     private void botonCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearUsuarioActionPerformed
         new PantallaRegistro(this, true).setVisible(true);
     }//GEN-LAST:event_botonCrearUsuarioActionPerformed
+
+    private void campoNombreUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreUsuarioKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            botonInicioSesionActionPerformed(null);
+        }
+    }//GEN-LAST:event_campoNombreUsuarioKeyPressed
+
+    private void campoContraseñaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoContraseñaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            botonInicioSesionActionPerformed(null);
+        }
+    }//GEN-LAST:event_campoContraseñaKeyPressed
 
     /**
      * @param args the command line arguments

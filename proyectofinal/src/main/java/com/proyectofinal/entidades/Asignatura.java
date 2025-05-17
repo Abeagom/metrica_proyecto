@@ -23,10 +23,6 @@ public class Asignatura {
         temas = new ArrayList();
     }
 
-    public Asignatura(String nombre, Maestro maestro) {
-        this.nombre=nombre;
-        this.maestro=maestro;
-    }
 
     public int getId() {
         return id;
@@ -80,6 +76,11 @@ public class Asignatura {
         }
         final Asignatura other = (Asignatura) obj;
         return this.id == other.id;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
     
     

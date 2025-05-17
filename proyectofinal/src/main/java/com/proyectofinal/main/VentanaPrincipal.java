@@ -4,13 +4,12 @@
  */
 package com.proyectofinal.main;
 
-import com.proyectofinal.datos.DAOMaestros;
 import com.proyectofinal.entidades.Asignatura;
 import com.proyectofinal.entidades.Maestro;
-import java.awt.PopupMenu;
+import com.proyectofinal.entidades.Tema;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,7 +18,8 @@ import javax.swing.table.DefaultTableModel;
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     Maestro m;
-    private DefaultListModel<String> modeloListaAsignaturas = new DefaultListModel<>();
+    private DefaultListModel<Asignatura> modeloListaAsignaturas = new DefaultListModel<>();
+    private DefaultListModel<Tema> modeloListaTemas = new DefaultListModel<>();
 
     /**
      * Creates new form VentanaPrincipal
@@ -28,8 +28,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.m = m;
         initComponents();
         listaAsignaturas.setModel(modeloListaAsignaturas);
+        listaTemas.setModel(modeloListaTemas);
         for (Asignatura a : m.getAsignaturas()) {
-            modeloListaAsignaturas.addElement(a.getNombre());
+            modeloListaAsignaturas.addElement(a);
         }
 
         editarAsignatura.setEnabled(false);
@@ -146,13 +147,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         etiquetaCopyright.setText("© 2025 Educa+. Versión 0.1 (Beta). Todos los derechos reservados.");
 
         listaAsignaturas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaAsignaturas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaAsignaturasMouseClicked(evt);
+            }
+        });
+        listaAsignaturas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaAsignaturasValueChanged(evt);
+            }
+        });
         jScrollPane4.setViewportView(listaAsignaturas);
 
-        listaTemas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         listaTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(listaTemas);
 
@@ -196,7 +202,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addGroup(pestañaPrincipalLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(añadirTema, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(añadirTema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jScrollPane1))
                                 .addGap(133, 133, 133)
                                 .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -214,9 +220,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(etiquetaBienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addGap(40, 40, 40)
                 .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane4)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -224,12 +229,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(añadirAsignatura)
                     .addComponent(añadirActividad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
-                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editarAsignatura)
+                .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pestañaPrincipalLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addComponent(editarActividad))
-                    .addComponent(editarTema))
+                    .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(editarAsignatura)
+                        .addComponent(editarTema)))
                 .addGap(8, 8, 8)
                 .addGroup(pestañaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(eliminarAsignatura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -314,11 +320,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_editarAsignaturaActionPerformed
 
     private void añadirAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirAsignaturaActionPerformed
-        new AñadirAsignatura(this, true, m).setVisible(true);
+        new ModificarAsignatura(this, true, m, ModificarAsignatura.Modo.AÑADIR).setVisible(true);
         modeloListaAsignaturas.clear();
-        modeloListaAsignaturas.addAll(m.getAsignaturas().stream().map(a -> a.getNombre()).collect(Collectors.toList()));
+        modeloListaAsignaturas.addAll(m.getAsignaturas());
 
     }//GEN-LAST:event_añadirAsignaturaActionPerformed
+
+    private void listaAsignaturasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaAsignaturasValueChanged
+        /*editarAsignatura.setEnabled(true);
+        modeloListaTemas.clear();
+        modeloListaTemas.addAll(listaAsignaturas.getSelectedValue().getTemas());
+        
+        modeloListaTemas.addAll(m.getAsignaturas().stream()
+                .filter(a -> a.getNombre().equalsIgnoreCase(listaAsignaturas.getSelectedValue()))
+                .findFirst()
+                .map(a -> a.getTemas().stream().map(Tema::getNombre).collect(Collectors.toList()))
+                .orElse(Collections.emptyList()));
+         */
+    }//GEN-LAST:event_listaAsignaturasValueChanged
+
+    private void listaAsignaturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaAsignaturasMouseClicked
+        editarAsignatura.setEnabled(true);
+        eliminarAsignatura.setEnabled(true);
+        modeloListaTemas.clear();
+        modeloListaTemas.addAll(listaAsignaturas.getSelectedValue().getTemas());
+    }//GEN-LAST:event_listaAsignaturasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -372,8 +398,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JList<String> listaActividades;
-    private javax.swing.JList<String> listaAsignaturas;
-    private javax.swing.JList<String> listaTemas;
+    private javax.swing.JList<Asignatura> listaAsignaturas;
+    private javax.swing.JList<Tema> listaTemas;
     private javax.swing.JPanel pestañaCalendario;
     private javax.swing.JPanel pestañaPrincipal;
     private javax.swing.JTabbedPane pestañas;
