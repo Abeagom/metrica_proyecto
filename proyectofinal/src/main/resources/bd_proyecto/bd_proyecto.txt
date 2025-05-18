@@ -30,6 +30,7 @@ CREATE TABLE actividades (
     descripcion TEXT NOT NULL,
     objetivos TEXT,
     id_tema INT,
+    fechaActividad DATE DEFAULT NULL,
     FOREIGN KEY (id_tema) REFERENCES temas(id) ON DELETE CASCADE
     -- Al eliminar un tema, se eliminarán sus actividades automáticamente
 );
@@ -47,11 +48,8 @@ CREATE TABLE alumno_maestro (
     FOREIGN KEY (login_maestro) REFERENCES maestros(login)
 );
 
--- Crear el usuario para la base de datos
+DROP USER IF EXISTS 'educaplus'@'localhost';
 CREATE USER 'educaplus'@'localhost' IDENTIFIED BY 'educaplus';
 GRANT ALL PRIVILEGES ON `educaplus`.* TO 'educaplus'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
-
-
-
 

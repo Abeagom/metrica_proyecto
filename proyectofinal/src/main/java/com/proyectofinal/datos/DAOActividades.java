@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class DAOActividades {
             pst.setInt(1, t.getId());
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Actividad a = new Actividad(rs.getInt("id"), rs.getString("nombre"), rs.getString("descripcion"), rs.getString("objetivos"), t);
+                Actividad a = new Actividad(rs.getInt("id"), rs.getString("nombre"), rs.getString("descripcion"), rs.getString("objetivos"), t, (rs.getDate("fechaActividad") != null) ? rs.getDate("fechaActividad").toLocalDate() : null);
                 actividades.add(a);
             }
         } catch (SQLException e) {
@@ -75,7 +76,7 @@ public class DAOActividades {
             pst.executeUpdate();
             ResultSet claveGenerada = pst.getGeneratedKeys();
             if (claveGenerada.next()) {
-                t.getActividades().add(new Actividad(claveGenerada.getInt(1), nombre, descripcion, objetivos, t));
+                t.getActividades().add(new Actividad(claveGenerada.getInt(1), nombre, descripcion, objetivos, t, null));
             }
 
         } catch (SQLException e) {
@@ -95,6 +96,22 @@ public class DAOActividades {
             pst.setString(2, nuevaDescripcion);
             pst.setString(3, nuevosObjetivos);
             pst.setInt(4, idActividad);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("editarActividad:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+    
+        public void editarActividad(LocalDate fecha, int idActividad) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "UPDATE actividades SET fechaActividad = ? WHERE id = ?");
+            pst.setDate(1, java.sql.Date.valueOf(fecha));
+            pst.setInt(2, idActividad);
             pst.executeUpdate();
         } catch (SQLException e) {
             System.err.println("editarActividad:" + e.getMessage());

@@ -18,13 +18,13 @@ public class Actividad {
     private Tema tema;
     LocalDate fecha;
 
-    public Actividad(int id, String nombre, String descripcion, String objetivos, Tema tema) {
+    public Actividad(int id, String nombre, String descripcion, String objetivos, Tema tema, LocalDate fecha) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.objetivos = objetivos;
         this.tema = tema;
-        this.fecha=null;
+        this.fecha=fecha;
     }
 
     public int getId() {

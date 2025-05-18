@@ -4,14 +4,27 @@
  */
 package com.proyectofinal.main;
 
+import com.proyectofinal.datos.DAOActividades;
 import com.proyectofinal.entidades.Actividad;
 import com.proyectofinal.entidades.Asignatura;
 import com.proyectofinal.entidades.Maestro;
 import com.proyectofinal.entidades.Tema;
-import java.util.Collections;
+import java.io.IOException;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  *
@@ -23,8 +36,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private DefaultListModel<Asignatura> modeloListaAsignaturas = new DefaultListModel<>();
     private DefaultListModel<Tema> modeloListaTemas = new DefaultListModel<>();
     private DefaultListModel<Actividad> modeloListaActividades = new DefaultListModel<>();
-    private DefaultComboBoxModel<Asignatura> modeloComboBoxAsignaturas;
-    private DefaultComboBoxModel<Tema> modeloComboBoxTemas;
+    private DefaultComboBoxModel<Object> modeloComboBoxActividades;
+    private Map<String, Actividad> mapaActividades = new HashMap<>();
 
     public enum Modo {
         AÑADIR, EDITAR, ELIMINAR
@@ -36,15 +49,62 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public VentanaPrincipal(Maestro m) {
         this.m = m;
         initComponents();
+        asignarModelos();
+        modeloListaAsignaturas.addAll(m.getAsignaturas());
+        rellenarDesplegable();
+        rellenarMeses();
+        botonesInicial();
+
+    }
+
+    private void rellenarDesplegable() {
+        modeloComboBoxActividades.removeAllElements();
+        for (Asignatura a : m.getAsignaturas()) {
+            modeloComboBoxActividades.addElement("-" + a.getNombre());
+            for (Tema t : a.getTemas()) {
+                modeloComboBoxActividades.addElement("    -" + t.getNombre());
+                for (Actividad ac : t.getActividades()) {
+                    String clave = "        -" + ac.getNombre();
+                    modeloComboBoxActividades.addElement(clave);
+                    mapaActividades.put(clave, ac);
+                }
+            }
+        }
+    }
+
+    private void rellenarMeses() {
+        for (Month mes : Month.values()) {
+            desplegableMeses.addItem(mes.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()));
+        }
+    }
+
+    private void rellenarTablaActividades() {
+        // Crear el modelo con las columnas "Nombre" y "Fecha"
+        DefaultTableModel model = (DefaultTableModel) tablaActividades.getModel();
+        model.setColumnCount(0);  // Limpiar columnas anteriores
+        model.setColumnIdentifiers(new Object[]{"Nombre", "Fecha"});  // Establecer las columnas
+
+        // Limpiar las filas existentes
+        model.setRowCount(0);
+
+        // Añadir las actividades a la tabla
+        for (Actividad actividad : mapaActividades.values()) {
+            model.addRow(new Object[]{
+                actividad.getNombre(),
+                (actividad.getFecha() != null) ? actividad.getFecha().toString() : "Sin fecha"
+            });
+        }
+    }
+
+    private void asignarModelos() {
         listaAsignaturas.setModel(modeloListaAsignaturas);
         listaTemas.setModel(modeloListaTemas);
         listaActividades.setModel(modeloListaActividades);
-        modeloComboBoxAsignaturas = new DefaultComboBoxModel<>();
-        desplegableAsignaturas.setModel(modeloComboBoxAsignaturas);
-        modeloComboBoxTemas = new DefaultComboBoxModel<>();
-        desplegableTemas.setModel(modeloComboBoxTemas);
-        modeloComboBoxAsignaturas.addAll(m.getAsignaturas());
-        modeloListaAsignaturas.addAll(m.getAsignaturas());
+        modeloComboBoxActividades = new DefaultComboBoxModel<>();
+        desplegableActividades.setModel(modeloComboBoxActividades);
+    }
+
+    private void botonesInicial() {
         editarAsignatura.setEnabled(false);
         eliminarAsignatura.setEnabled(false);
         añadirTema.setEnabled(false);
@@ -87,8 +147,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         listaActividades = new javax.swing.JList<>();
         pestañaCalendario = new javax.swing.JPanel();
         etiquetaBienvenida1 = new javax.swing.JLabel();
-        desplegableAsignaturas = new javax.swing.JComboBox<>();
-        desplegableTemas = new javax.swing.JComboBox<>();
+        calendario = new com.github.lgooddatepicker.components.CalendarPanel();
+        desplegableActividades = new javax.swing.JComboBox<>();
+        desplegableMeses = new javax.swing.JComboBox<>();
+        asignarFecha = new javax.swing.JButton();
+        etiquetaMes = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        botonAsignarFecha = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tablaActividades = new javax.swing.JTable();
+        etiquetaFiltrarPorMes = new javax.swing.JLabel();
+        etiquetaAsignarFecha1 = new javax.swing.JLabel();
+        botonExportar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        botonFiltrar = new javax.swing.JButton();
         pestañaAlumnos = new javax.swing.JPanel();
         etiquetaBienvenida2 = new javax.swing.JLabel();
 
@@ -214,7 +286,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addComponent(añadirActividad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(editarActividad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(eliminarActividad, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
-                        .addGap(0, 714, Short.MAX_VALUE))
+                        .addGap(0, 1001, Short.MAX_VALUE))
                     .addGroup(pestañaPrincipalLayout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
@@ -261,47 +333,125 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(editarActividad)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(eliminarActividad)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
                 .addComponent(etiquetaCopyright, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pestañas.addTab("Principal", pestañaPrincipal);
 
         pestañaCalendario.setBackground(new java.awt.Color(255, 225, 231));
+        pestañaCalendario.setLayout(null);
 
         etiquetaBienvenida1.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        pestañaCalendario.add(etiquetaBienvenida1);
+        etiquetaBienvenida1.setBounds(0, 0, 817, 28);
+        pestañaCalendario.add(calendario);
+        calendario.setBounds(120, 160, 229, 203);
 
-        desplegableAsignaturas.addActionListener(new java.awt.event.ActionListener() {
+        desplegableActividades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                desplegableAsignaturasActionPerformed(evt);
+                desplegableActividadesActionPerformed(evt);
             }
         });
+        pestañaCalendario.add(desplegableActividades);
+        desplegableActividades.setBounds(120, 120, 229, 22);
 
-        javax.swing.GroupLayout pestañaCalendarioLayout = new javax.swing.GroupLayout(pestañaCalendario);
-        pestañaCalendario.setLayout(pestañaCalendarioLayout);
-        pestañaCalendarioLayout.setHorizontalGroup(
-            pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                .addComponent(etiquetaBienvenida1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 599, Short.MAX_VALUE))
-            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(desplegableAsignaturas, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(desplegableTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pestañaCalendarioLayout.setVerticalGroup(
-            pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(etiquetaBienvenida1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(desplegableAsignaturas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(desplegableTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(329, Short.MAX_VALUE))
-        );
+        desplegableMeses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                desplegableMesesActionPerformed(evt);
+            }
+        });
+        pestañaCalendario.add(desplegableMeses);
+        desplegableMeses.setBounds(590, 120, 120, 22);
+
+        asignarFecha.setText("Asignar fecha");
+        asignarFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asignarFechaActionPerformed(evt);
+            }
+        });
+        pestañaCalendario.add(asignarFecha);
+        asignarFecha.setBounds(180, 380, 102, 23);
+
+        etiquetaMes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        etiquetaMes.setText("Mes");
+        pestañaCalendario.add(etiquetaMes);
+        etiquetaMes.setBounds(530, 120, 52, 16);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Fecha");
+        pestañaCalendario.add(jLabel2);
+        jLabel2.setBounds(40, 170, 32, 16);
+
+        botonAsignarFecha.setText("Asignar fecha");
+        botonAsignarFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAsignarFechaActionPerformed(evt);
+            }
+        });
+        pestañaCalendario.add(botonAsignarFecha);
+        botonAsignarFecha.setBounds(179, 216, 102, 0);
+
+        tablaActividades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Actividad", "Fecha"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tablaActividades);
+
+        pestañaCalendario.add(jScrollPane5);
+        jScrollPane5.setBounds(590, 150, 260, 250);
+
+        etiquetaFiltrarPorMes.setBackground(new java.awt.Color(255, 255, 255));
+        etiquetaFiltrarPorMes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        etiquetaFiltrarPorMes.setText("Filtrar actividades por mes");
+        etiquetaFiltrarPorMes.setOpaque(true);
+        pestañaCalendario.add(etiquetaFiltrarPorMes);
+        etiquetaFiltrarPorMes.setBounds(590, 50, 260, 40);
+
+        etiquetaAsignarFecha1.setBackground(new java.awt.Color(255, 255, 255));
+        etiquetaAsignarFecha1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        etiquetaAsignarFecha1.setText("Asignar fecha a una actividad");
+        etiquetaAsignarFecha1.setOpaque(true);
+        pestañaCalendario.add(etiquetaAsignarFecha1);
+        etiquetaAsignarFecha1.setBounds(100, 50, 260, 40);
+
+        botonExportar.setText("Exportar a PDF");
+        botonExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonExportarActionPerformed(evt);
+            }
+        });
+        pestañaCalendario.add(botonExportar);
+        botonExportar.setBounds(650, 430, 130, 23);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Actividad");
+        pestañaCalendario.add(jLabel3);
+        jLabel3.setBounds(40, 120, 52, 16);
+
+        botonFiltrar.setText("Filtrar");
+        botonFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonFiltrarActionPerformed(evt);
+            }
+        });
+        pestañaCalendario.add(botonFiltrar);
+        botonFiltrar.setBounds(730, 120, 75, 23);
 
         pestañas.addTab("Calendario", pestañaCalendario);
 
@@ -315,17 +465,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pestañaAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pestañaAlumnosLayout.createSequentialGroup()
                 .addComponent(etiquetaBienvenida2, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 599, Short.MAX_VALUE))
+                .addGap(0, 886, Short.MAX_VALUE))
         );
         pestañaAlumnosLayout.setVerticalGroup(
             pestañaAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pestañaAlumnosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(etiquetaBienvenida2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addContainerGap(751, Short.MAX_VALUE))
         );
 
-        pestañas.addTab("Calendario", pestañaAlumnos);
+        pestañas.addTab("Alumnos", pestañaAlumnos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -337,7 +487,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(pestañas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pestañas, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -347,6 +498,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (modeloListaTemas.size() > 0) {
             editarActividad.setEnabled(true);
             eliminarActividad.setEnabled(true);
+
         }
     }//GEN-LAST:event_listaActividadesMouseClicked
 
@@ -355,6 +507,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             editarTema.setEnabled(true);
             eliminarTema.setEnabled(true);
             añadirActividad.setEnabled(true);
+            editarActividad.setEnabled(false);
+            eliminarActividad.setEnabled(false);
             modeloListaActividades.clear();
             modeloListaActividades.addAll(listaTemas.getSelectedValue().getActividades());
         }
@@ -381,6 +535,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             modeloListaTemas.clear();
             modeloListaTemas.addAll(listaAsignaturas.getSelectedValue().getTemas());
             modeloListaActividades.clear();
+            editarTema.setEnabled(false);
+            eliminarTema.setEnabled(false);
+            añadirActividad.setEnabled(false);
+            editarActividad.setEnabled(false);
+            eliminarActividad.setEnabled(false);
         }
     }//GEN-LAST:event_listaAsignaturasMouseClicked
 
@@ -398,6 +557,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 eliminarActividad.setEnabled(false);
             }
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_eliminarActividadActionPerformed
 
     private void eliminarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTemaActionPerformed
@@ -416,6 +576,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 añadirActividad.setEnabled(false);
             }
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_eliminarTemaActionPerformed
 
     private void eliminarAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarAsignaturaActionPerformed
@@ -432,6 +593,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 eliminarAsignatura.setEnabled(false);
             }
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_eliminarAsignaturaActionPerformed
 
     private void editarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActividadActionPerformed
@@ -444,6 +606,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             modeloListaActividades.clear();
             modeloListaActividades.addAll(listaTemas.getSelectedValue().getActividades());
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_editarActividadActionPerformed
 
     private void añadirActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirActividadActionPerformed
@@ -454,6 +617,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             modeloListaActividades.clear();
             modeloListaActividades.addAll(listaTemas.getSelectedValue().getActividades());
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_añadirActividadActionPerformed
 
     private void editarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarTemaActionPerformed
@@ -467,6 +631,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             modeloListaTemas.addAll(listaAsignaturas.getSelectedValue().getTemas());
             modeloListaActividades.clear();
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_editarTemaActionPerformed
 
     private void añadirTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirTemaActionPerformed
@@ -478,6 +643,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             modeloListaTemas.addAll(listaAsignaturas.getSelectedValue().getTemas());
             modeloListaActividades.clear();
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_añadirTemaActionPerformed
 
     private void editarAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarAsignaturaActionPerformed
@@ -490,6 +656,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             modeloListaTemas.clear();
             modeloListaActividades.clear();
         }
+        rellenarDesplegable();
     }//GEN-LAST:event_editarAsignaturaActionPerformed
 
     private void añadirAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirAsignaturaActionPerformed
@@ -498,12 +665,143 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         modeloListaAsignaturas.addAll(m.getAsignaturas());
         modeloListaTemas.clear();
         modeloListaActividades.clear();
+        rellenarDesplegable();
     }//GEN-LAST:event_añadirAsignaturaActionPerformed
 
-    private void desplegableAsignaturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableAsignaturasActionPerformed
-        modeloComboBoxTemas.removeAllElements();
-        modeloComboBoxTemas.addAll(m.getAsignaturas().stream().filter((a) -> a.equals(modeloComboBoxAsignaturas.getSelectedItem())).findFirst().map((a) -> a.getTemas()).orElse(Collections.emptyList()));
-    }//GEN-LAST:event_desplegableAsignaturasActionPerformed
+    private void desplegableActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableActividadesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desplegableActividadesActionPerformed
+
+    private void desplegableMesesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableMesesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desplegableMesesActionPerformed
+
+    private void asignarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignarFechaActionPerformed
+        if (!(mapaActividades.get(desplegableActividades.getSelectedItem()) instanceof Actividad)) {
+            JOptionPane.showMessageDialog(this, "Debe escoger una actividad",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (calendario.getSelectedDate() != null) {
+                mapaActividades.get(desplegableActividades.getSelectedItem()).setFecha(calendario.getSelectedDate());
+                DAOActividades da = new DAOActividades();
+                da.editarActividad(calendario.getSelectedDate(), mapaActividades.get(desplegableActividades.getSelectedItem()).getId());
+            } else {
+                JOptionPane.showMessageDialog(this, "Debe escoger una fecha",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        rellenarDesplegable();
+    }//GEN-LAST:event_asignarFechaActionPerformed
+
+    private void botonAsignarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAsignarFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonAsignarFechaActionPerformed
+
+    private void botonExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarActionPerformed
+        try {
+            List<Actividad> actividadesPDF = new ArrayList();
+            int mesSeleccionado = -1;
+            for (Month mes : Month.values()) {
+                if (mes.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()).equals(desplegableMeses.getSelectedItem())) {
+                    mesSeleccionado = mes.getValue();
+                }
+            }
+            final int mesSeleccionadoFinal = mesSeleccionado;
+            actividadesPDF = mapaActividades.values().stream()
+                    .filter(a -> a.getFecha() != null && a.getFecha()
+                    .getMonthValue() == mesSeleccionadoFinal)
+                    .toList();
+            PDDocument documentoActividades = new PDDocument();
+            // Crear una nueva página
+            PDPage page = new PDPage();
+            // Preparar el flujo de contenido para la página
+            PDPageContentStream contentStream = new PDPageContentStream(documentoActividades, page);
+            // Comenzar a escribir en el documento
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+            contentStream.newLineAtOffset(100, 700); // Establecer la posición (X, Y)
+            int contador = 0;
+            for (Actividad a : actividadesPDF) {
+                documentoActividades.addPage(page);
+                if (contador == 0) {
+                    contentStream.showText("Actividades de " + desplegableMeses.getSelectedItem());
+                }
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.newLineAtOffset(0, -40);
+                // Escribir texto
+                contentStream.showText("-Actividad: ");
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.setFont(PDType1Font.HELVETICA, 16);
+                contentStream.showText(a.getNombre());
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.newLineAtOffset(0, -40);
+                contentStream.showText("-Descripción: ");
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.setFont(PDType1Font.HELVETICA, 16);
+                contentStream.showText(a.getDescripcion());
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.newLineAtOffset(0, -40);
+                contentStream.showText("-Objetivos: ");
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.setFont(PDType1Font.HELVETICA, 16);
+                contentStream.showText(a.getObjetivos());
+                contador++;
+            }
+            // Terminar de escribir
+            contentStream.endText();
+
+            // Cerrar el flujo de contenido
+            contentStream.close();
+
+            // Guardar el documento en un archivo
+            documentoActividades.save("ejemplo.pdf");
+
+            // Cerrar el documento
+            documentoActividades.close();
+
+            System.out.println("PDF creado con éxito.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_botonExportarActionPerformed
+
+    private void botonFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFiltrarActionPerformed
+
+        int mesSeleccionado = -1;
+        for (Month mes : Month.values()) {
+            if (mes.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()).equals(desplegableMeses.getSelectedItem())) {
+                mesSeleccionado = mes.getValue();
+            }
+        }
+        final int mesSeleccionadoFinal = mesSeleccionado;
+
+        // Crear el modelo con las columnas "Nombre" y "Fecha"
+        DefaultTableModel model = (DefaultTableModel) tablaActividades.getModel();
+        model.setColumnCount(0);  // Limpiar columnas anteriores
+        model.setColumnIdentifiers(new Object[]{"Nombre", "Fecha"});  // Establecer las columnas
+
+        // Limpiar las filas existentes
+        model.setRowCount(0);
+
+        mapaActividades.values().stream()
+                .filter(a -> a.getFecha() != null && a.getFecha().getMonthValue() == mesSeleccionadoFinal) // Filtrar solo si la fecha no es nula
+                .forEach(a -> {
+                    model.addRow(new Object[]{
+                        a.getNombre(),
+                        a.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                    });
+                });
+
+        /*
+        // Añadir las actividades a la tabla
+        for (Actividad actividad : mapaActividades.values()) {
+            model.addRow(new Object[]{
+                actividad.getNombre(),
+                (actividad.getFecha() != null) ? actividad.getFecha().toString() : "Sin fecha"
+            });
+        }
+         */
+    }//GEN-LAST:event_botonFiltrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -541,24 +839,35 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton asignarFecha;
     private javax.swing.JButton añadirActividad;
     private javax.swing.JButton añadirAsignatura;
     private javax.swing.JButton añadirTema;
-    private javax.swing.JComboBox<Asignatura> desplegableAsignaturas;
-    private javax.swing.JComboBox<Tema> desplegableTemas;
+    private javax.swing.JButton botonAsignarFecha;
+    private javax.swing.JButton botonExportar;
+    private javax.swing.JButton botonFiltrar;
+    private com.github.lgooddatepicker.components.CalendarPanel calendario;
+    private javax.swing.JComboBox<Object> desplegableActividades;
+    private javax.swing.JComboBox<String> desplegableMeses;
     private javax.swing.JButton editarActividad;
     private javax.swing.JButton editarAsignatura;
     private javax.swing.JButton editarTema;
     private javax.swing.JButton eliminarActividad;
     private javax.swing.JButton eliminarAsignatura;
     private javax.swing.JButton eliminarTema;
+    private javax.swing.JLabel etiquetaAsignarFecha1;
     private javax.swing.JLabel etiquetaBienvenida;
     private javax.swing.JLabel etiquetaBienvenida1;
     private javax.swing.JLabel etiquetaBienvenida2;
     private javax.swing.JLabel etiquetaCopyright;
+    private javax.swing.JLabel etiquetaFiltrarPorMes;
+    private javax.swing.JLabel etiquetaMes;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JList<Actividad> listaActividades;
     private javax.swing.JList<Asignatura> listaAsignaturas;
     private javax.swing.JList<Tema> listaTemas;
@@ -566,5 +875,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel pestañaCalendario;
     private javax.swing.JPanel pestañaPrincipal;
     private javax.swing.JTabbedPane pestañas;
+    private javax.swing.JTable tablaActividades;
     // End of variables declaration//GEN-END:variables
 }
