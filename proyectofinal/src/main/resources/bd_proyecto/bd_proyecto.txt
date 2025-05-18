@@ -1,33 +1,37 @@
-CREATE DATABASE `educa+`;
+CREATE DATABASE IF NOT EXISTS `educaplus`;
 
+USE `educaplus`;
 
 CREATE TABLE maestros (
-    login VARCHAR(20) PRIMARY KEY,
-    password VARCHAR(20) NOT NULL,
+    login VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(50) NOT NULL,
     nombre VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE asignaturas (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(20) NOT NULL,
-    login_maestro VARCHAR(20),
-    FOREIGN KEY (login_maestro) REFERENCES maestros(login)
+    nombre VARCHAR(50) NOT NULL,
+    login_maestro VARCHAR(50),
+    FOREIGN KEY (login_maestro) REFERENCES maestros(login) ON DELETE CASCADE
+    -- Al eliminar un maestro, se eliminarán sus asignaturas automáticamente
 );
 
 CREATE TABLE temas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     id_asignatura INT,
-    FOREIGN KEY (id_asignatura) REFERENCES asignaturas(id)
+    FOREIGN KEY (id_asignatura) REFERENCES asignaturas(id) ON DELETE CASCADE
+    -- Al eliminar una asignatura, se eliminarán sus temas automáticamente
 );
 
 CREATE TABLE actividades (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(20) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
     descripcion TEXT NOT NULL,
     objetivos TEXT,
     id_tema INT,
-    FOREIGN KEY (id_tema) REFERENCES temas(id)
+    FOREIGN KEY (id_tema) REFERENCES temas(id) ON DELETE CASCADE
+    -- Al eliminar un tema, se eliminarán sus actividades automáticamente
 );
 
 CREATE TABLE alumnos (
@@ -37,14 +41,15 @@ CREATE TABLE alumnos (
 
 CREATE TABLE alumno_maestro (
     id_alumno INT,
-    login_maestro VARCHAR(20),
+    login_maestro VARCHAR(50),
     PRIMARY KEY (id_alumno, login_maestro),
     FOREIGN KEY (id_alumno) REFERENCES alumnos(id),
     FOREIGN KEY (login_maestro) REFERENCES maestros(login)
 );
 
-CREATE USER 'educa+'@'localhost' IDENTIFIED BY 'educa+';
-GRANT ALL PRIVILEGES ON *.* TO 'educa+'@'localhost' WITH GRANT OPTION;
+-- Crear el usuario para la base de datos
+CREATE USER 'educaplus'@'localhost' IDENTIFIED BY 'educaplus';
+GRANT ALL PRIVILEGES ON `educaplus`.* TO 'educaplus'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 

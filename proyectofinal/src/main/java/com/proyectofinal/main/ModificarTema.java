@@ -4,9 +4,9 @@
  */
 package com.proyectofinal.main;
 
-import com.proyectofinal.datos.DAOAsignaturas;
+import com.proyectofinal.datos.DAOTemas;
 import com.proyectofinal.entidades.Asignatura;
-import com.proyectofinal.entidades.Maestro;
+import com.proyectofinal.entidades.Tema;
 import com.proyectofinal.main.VentanaPrincipal.Modo;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -15,84 +15,83 @@ import javax.swing.JOptionPane;
  *
  * @author al_12
  */
-public class ModificarAsignatura extends javax.swing.JDialog {
+public class ModificarTema extends javax.swing.JDialog {
 
-    private Maestro maestro;
     private Asignatura asignatura;
+    private Tema tema;
     private Modo modo;
-
 
     /**
      * Creates new form AñadirAsignatura
      */
-    public ModificarAsignatura(java.awt.Frame parent, boolean modal, Maestro maestro, Modo modo) {
+    public ModificarTema(java.awt.Frame parent, boolean modal, Asignatura asignatura, Modo modo) {
         super(parent, modal);
-        this.maestro = maestro;
+        this.asignatura = asignatura;
         this.modo = modo;
         initComponents();
-        etiquetaAsignatura.setText(modo.toString().substring(0, 1).toUpperCase()
+        etiquetaTema.setText(modo.toString().substring(0, 1).toUpperCase()
                 + modo.toString().substring(1).toLowerCase()
-                + " asignatura");
+                + " tema");
         if (modo == Modo.AÑADIR) {
             botonAceptar.setText("Añadir");
         }
     }
 
-    public ModificarAsignatura(java.awt.Frame parent, boolean modal, Maestro maestro, Asignatura asignatura, Modo modo) {
+    public ModificarTema(java.awt.Frame parent, boolean modal, Asignatura asignatura, Tema tema, Modo modo) {
         super(parent, modal);
-        this.maestro = maestro;
         this.asignatura = asignatura;
+        this.tema = tema;
         this.modo = modo;
         initComponents();
-        etiquetaAsignatura.setText(modo.toString().substring(0, 1).toUpperCase()
+        etiquetaTema.setText(modo.toString().substring(0, 1).toUpperCase()
                 + modo.toString().substring(1).toLowerCase()
-                + " asignatura");
+                + " tema");
         if (modo == Modo.EDITAR) {
             botonAceptar.setText("Editar");
-            nombreAsignatura.setText("Nuevo nombre");
+            nombreTema.setText("Nuevo nombre");
         } else if (modo == Modo.ELIMINAR) {
             botonAceptar.setText("Eliminar");
-            nombreAsignatura.setText("¿Quieres eliminar?");
-            campoNombreAsignatura.setText(asignatura.getNombre());
-            campoNombreAsignatura.setEnabled(false);
+            nombreTema.setText("¿Quieres eliminar?");
+            campoNombreTema.setText(tema.getNombre());
+            campoNombreTema.setEnabled(false);
         }
     }
 
-    private void añadirAsignatura() {
-        if (campoNombreAsignatura.getText().isBlank() || campoNombreAsignatura.getText().isEmpty()) {
+    private void añadirTema() {
+        if (campoNombreTema.getText().isBlank() || campoNombreTema.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe introducir un nombre",
                     "Error", JOptionPane.WARNING_MESSAGE);
-        } else if (maestro.getAsignaturas().stream().anyMatch((a) -> a.getNombre().trim().equalsIgnoreCase(campoNombreAsignatura.getText().trim()))) {
-            JOptionPane.showMessageDialog(this, "El nombre de la asignatura ya existe",
+        } else if (asignatura.getTemas().stream().anyMatch((a) -> a.getNombre().trim().equalsIgnoreCase(campoNombreTema.getText().trim()))) {
+            JOptionPane.showMessageDialog(this, "El nombre del tema ya existe",
                     "Error", JOptionPane.WARNING_MESSAGE);
         } else {
-            DAOAsignaturas da = new DAOAsignaturas();
-            da.añadirAsignatura(campoNombreAsignatura.getText(), maestro);
+            DAOTemas dt = new DAOTemas();
+            dt.añadirTema(campoNombreTema.getText(), asignatura);
             this.dispose();
         }
     }
 
-    private void editarAsignatura() {
-        if (campoNombreAsignatura.getText().isBlank() || campoNombreAsignatura.getText().isEmpty()) {
+    private void editarTema() {
+        if (campoNombreTema.getText().isBlank() || campoNombreTema.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe introducir un nombre",
                     "Error", JOptionPane.WARNING_MESSAGE);
-        } else if (maestro.getAsignaturas().stream().anyMatch((a) -> a.getNombre().trim().equalsIgnoreCase(campoNombreAsignatura.getText().trim()))) {
-            JOptionPane.showMessageDialog(this, "El nombre de la asignatura ya existe",
+        } else if (asignatura.getTemas().stream().anyMatch((a) -> a.getNombre().trim().equalsIgnoreCase(campoNombreTema.getText().trim()))) {
+            JOptionPane.showMessageDialog(this, "El nombre del tema ya existe",
                     "Error", JOptionPane.WARNING_MESSAGE);
         } else {
-            DAOAsignaturas da = new DAOAsignaturas();
-            da.editarAsignatura(campoNombreAsignatura.getText(), asignatura.getId());
-            asignatura.setNombre(campoNombreAsignatura.getText().trim());
+            DAOTemas dt = new DAOTemas();
+            dt.editarTema(campoNombreTema.getText(), tema.getId());
+            tema.setNombre(campoNombreTema.getText().trim());
             this.dispose();
         }
     }
-    
-        private void eliminarAsignatura() {
-            DAOAsignaturas da = new DAOAsignaturas();
-            da.eliminarAsignatura(asignatura);
-            maestro.getAsignaturas().remove(asignatura);
-            this.dispose();
-        }
+
+    private void eliminarTema() {
+        DAOTemas dt = new DAOTemas();
+        dt.eliminarTema(tema);
+        asignatura.getTemas().remove(tema);
+        this.dispose();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,18 +103,18 @@ public class ModificarAsignatura extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        nombreAsignatura = new javax.swing.JLabel();
+        nombreTema = new javax.swing.JLabel();
         botonAceptar = new javax.swing.JButton();
-        campoNombreAsignatura = new javax.swing.JTextField();
-        etiquetaAsignatura = new javax.swing.JLabel();
+        campoNombreTema = new javax.swing.JTextField();
+        etiquetaTema = new javax.swing.JLabel();
         botonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(193, 239, 255));
 
-        nombreAsignatura.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        nombreAsignatura.setText("Nombre");
+        nombreTema.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        nombreTema.setText("Nombre");
 
         botonAceptar.setText("Aceptar");
         botonAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -124,20 +123,20 @@ public class ModificarAsignatura extends javax.swing.JDialog {
             }
         });
 
-        campoNombreAsignatura.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        campoNombreAsignatura.addActionListener(new java.awt.event.ActionListener() {
+        campoNombreTema.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        campoNombreTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoNombreAsignaturaActionPerformed(evt);
+                campoNombreTemaActionPerformed(evt);
             }
         });
-        campoNombreAsignatura.addKeyListener(new java.awt.event.KeyAdapter() {
+        campoNombreTema.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                campoNombreAsignaturaKeyPressed(evt);
+                campoNombreTemaKeyPressed(evt);
             }
         });
 
-        etiquetaAsignatura.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        etiquetaAsignatura.setText(" ");
+        etiquetaTema.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        etiquetaTema.setText(" ");
 
         botonCancelar.setText("Cancelar");
         botonCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -154,13 +153,13 @@ public class ModificarAsignatura extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(nombreAsignatura, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                        .addComponent(nombreTema, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(campoNombreAsignatura, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(campoNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(etiquetaAsignatura, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(etiquetaTema, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(89, 89, 89)
@@ -173,11 +172,11 @@ public class ModificarAsignatura extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(etiquetaAsignatura)
+                .addComponent(etiquetaTema)
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombreAsignatura)
-                    .addComponent(campoNombreAsignatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nombreTema)
+                    .addComponent(campoNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonAceptar)
@@ -202,28 +201,28 @@ public class ModificarAsignatura extends javax.swing.JDialog {
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
 
         if (modo == Modo.AÑADIR) {
-            añadirAsignatura();
+            añadirTema();
         } else if (modo == Modo.EDITAR) {
-            editarAsignatura();
-        }else if(modo==Modo.ELIMINAR){
-            eliminarAsignatura();
+            editarTema();
+        } else if (modo == Modo.ELIMINAR) {
+            eliminarTema();
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
 
-    private void campoNombreAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreAsignaturaActionPerformed
+    private void campoNombreTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreTemaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoNombreAsignaturaActionPerformed
+    }//GEN-LAST:event_campoNombreTemaActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
-    private void campoNombreAsignaturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreAsignaturaKeyPressed
+    private void campoNombreTemaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreTemaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             botonAceptarActionPerformed(null);
         }
 
-    }//GEN-LAST:event_campoNombreAsignaturaKeyPressed
+    }//GEN-LAST:event_campoNombreTemaKeyPressed
 
     /**
      * @param args the command line arguments
@@ -242,14 +241,16 @@ public class ModificarAsignatura extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarAsignatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarTema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarAsignatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarTema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarAsignatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarTema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarAsignatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarTema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -257,7 +258,7 @@ public class ModificarAsignatura extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ModificarAsignatura dialog = new ModificarAsignatura(new javax.swing.JFrame(), true, null, null);
+                ModificarTema dialog = new ModificarTema(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -272,9 +273,9 @@ public class ModificarAsignatura extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
-    private javax.swing.JTextField campoNombreAsignatura;
-    private javax.swing.JLabel etiquetaAsignatura;
+    private javax.swing.JTextField campoNombreTema;
+    private javax.swing.JLabel etiquetaTema;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel nombreAsignatura;
+    private javax.swing.JLabel nombreTema;
     // End of variables declaration//GEN-END:variables
 }

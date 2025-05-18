@@ -98,4 +98,11 @@ public class Actividad {
         return this.id == other.id;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+    
+    
+
 }

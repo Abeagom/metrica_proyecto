@@ -7,12 +7,14 @@ package com.proyectofinal.datos;
 import com.mysql.cj.jdbc.Driver;
 import com.proyectofinal.entidades.Actividad;
 import com.proyectofinal.entidades.Asignatura;
+import com.proyectofinal.entidades.Maestro;
 import com.proyectofinal.entidades.Tema;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class DAOTemas {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Tema t = new Tema(rs.getInt("id"), rs.getString("nombre"), a);
+                t.setActividades(da.getActividadesPorTema(t));
                 temas.add(t);
             }
         } catch (SQLException e) {
@@ -58,5 +61,58 @@ public class DAOTemas {
         }
 
         return temas;
+    }
+
+    public void añadirTema(String nombre, Asignatura a) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "Insert into temas(nombre, id_asignatura) values(?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, nombre);
+            pst.setInt(2, a.getId());
+            pst.executeUpdate();
+            ResultSet claveGenerada = pst.getGeneratedKeys();
+            if (claveGenerada.next()) {
+                a.getTemas().add(new Tema(claveGenerada.getInt(1), nombre, a));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("añadirTema:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+
+    public void editarTema(String nuevoNombre, int idTema) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "UPDATE temas SET nombre = ? WHERE id = ?");
+            pst.setString(1, nuevoNombre);
+            pst.setInt(2, idTema);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("editarTema:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+
+    public void eliminarTema(Tema t) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "DELETE from temas WHERE id = ?");
+            pst.setInt(1, t.getId());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("eliminarTema:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
     }
 }

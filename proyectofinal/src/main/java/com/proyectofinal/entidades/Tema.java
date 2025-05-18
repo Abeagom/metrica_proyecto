@@ -17,6 +17,7 @@ public class Tema {
     private Asignatura asignatura;
 
     public Tema(int id, String nombre, Asignatura asignatura) {
+        this.id=id;
         this.nombre = nombre;
         this.asignatura = asignatura;
         actividades = new ArrayList();

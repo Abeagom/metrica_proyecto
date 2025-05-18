@@ -82,6 +82,37 @@ public class DAOAsignaturas {
             desconectarBD(conn);
         }
     }
+
+    public void editarAsignatura(String nuevoNombre, int idAsignatura) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "UPDATE asignaturas SET nombre = ? WHERE id = ?");
+            pst.setString(1, nuevoNombre);
+            pst.setInt(2, idAsignatura);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("editarAsignatura:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+    
+        public void eliminarAsignatura(Asignatura a) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "DELETE from asignaturas WHERE id = ?");
+            pst.setInt(1, a.getId());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("editarAsignatura:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
     /*
         public boolean comprobarAsignaturas(String nombreAsignatura, Maestro m) {
         Connection conn = null;
