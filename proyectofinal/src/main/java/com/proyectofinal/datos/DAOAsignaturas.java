@@ -22,6 +22,12 @@ import java.util.List;
  */
 public class DAOAsignaturas {
 
+    /**
+     * Establece una conexión con la base de datos.
+     *
+     * @return La conexión a la base de datos.
+     * @throws SQLException Si ocurre un error al conectar a la base de datos.
+     */
     public Connection conectarBD() throws SQLException {
         DriverManager.registerDriver(new Driver());
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/educaplus",
@@ -29,14 +35,25 @@ public class DAOAsignaturas {
         return conn;
     }
 
+    /**
+     * Cierra la conexión con la base de datos.
+     *
+     * @param conn La conexión a la base de datos a cerrar.
+     */
     public void desconectarBD(Connection conn) {
         try {
             conn.close();
         } catch (SQLException e) {
-            System.err.println("Error al desconectar BD: " + e.getMessage());
+            System.err.println("Error al desconectar BD DAOAsignaturas: " + e.getMessage());
         }
     }
 
+    /**
+     * Obtiene todas las asignaturas asociadas a un maestro.
+     *
+     * @param m El maestro del cual se obtendrán las asignaturas.
+     * @return Una lista de asignaturas asociadas al maestro.
+     */
     public List<Asignatura> getAsignaturasDeMaestro(Maestro m) {
         Connection conn = null;
         List<Asignatura> asignaturas = new ArrayList();
@@ -53,7 +70,7 @@ public class DAOAsignaturas {
                 asignaturas.add(a);
             }
         } catch (SQLException e) {
-            System.err.println("getMaestro:" + e.getMessage());
+            System.err.println("getAsignaturasDeMaestro:" + e.getMessage());
         } finally {
             desconectarBD(conn);
         }
@@ -61,6 +78,12 @@ public class DAOAsignaturas {
         return asignaturas;
     }
 
+    /**
+     * Añade una nueva asignatura asociada a un maestro.
+     *
+     * @param nombre El nombre de la nueva asignatura.
+     * @param m El maestro al cual se asociará la asignatura.
+     */
     public void añadirAsignatura(String nombre, Maestro m) {
         Connection conn = null;
         try {
@@ -83,6 +106,12 @@ public class DAOAsignaturas {
         }
     }
 
+    /**
+     * Edita el nombre de una asignatura existente en la base de datos.
+     *
+     * @param nuevoNombre El nuevo nombre para la asignatura.
+     * @param idAsignatura El id de la asignatura a editar.
+     */
     public void editarAsignatura(String nuevoNombre, int idAsignatura) {
         Connection conn = null;
         try {
@@ -98,8 +127,13 @@ public class DAOAsignaturas {
             desconectarBD(conn);
         }
     }
-    
-        public void eliminarAsignatura(Asignatura a) {
+
+    /**
+     * Elimina una asignatura de la base de datos.
+     *
+     * @param a La asignatura que se eliminará de la base de datos.
+     */
+    public void eliminarAsignatura(Asignatura a) {
         Connection conn = null;
         try {
             conn = conectarBD();
@@ -108,32 +142,9 @@ public class DAOAsignaturas {
             pst.setInt(1, a.getId());
             pst.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("editarAsignatura:" + e.getMessage());
+            System.err.println("eliminarAsignatura:" + e.getMessage());
         } finally {
             desconectarBD(conn);
         }
     }
-    /*
-        public boolean comprobarAsignaturas(String nombreAsignatura, Maestro m) {
-        Connection conn = null;
-        boolean existe = false;
-        try {
-            conn = conectarBD();
-            PreparedStatement stm = conn.prepareStatement("select nombre from asignaturas where login_maestro=?");
-            stm.setString(1, m.getLogin());
-            ResultSet resultset = stm.executeQuery();
-            while (resultset.next()){
-                if(resultset.getString("nombre").equalsIgnoreCase(nombreAsignatura)){
-                    existe=true;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("comprobarAsignatura:" + e.getMessage());
-        } finally {
-            desconectarBD(conn);
-        }
-        return existe;
-    }
-     */
-
 }

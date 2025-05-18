@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Esta clase representa la ventana de login donde el usuario ingresa su nombre de usuario y contraseña.
+ * Si los datos son correctos, accede a la ventana principal, de lo contrario muestra un mensaje de error.
  */
 package com.proyectofinal.main;
 
@@ -148,37 +148,59 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoContraseñaActionPerformed
 
+    /**
+     * Acción cuando se presiona el botón de inicio de sesión. Valida que el
+     * nombre de usuario y la contraseña sean correctos.
+     */
     private void botonInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInicioSesionActionPerformed
+        // Obtiene el nombre de usuario
         String login = campoNombreUsuario.getText().trim();
+        // Obtiene la contraseña
         String password = campoContraseña.getText().trim();
+        // Verifica si alguno de los campos está vacío y muestra una ventana emergente
         if (login.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Debe especificar usuario y contraseña", "Aviso",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+        // Creación de DAO para obtener los datos del usuario desde la base de datos
         DAOMaestros du = new DAOMaestros();
         Maestro maestro = du.getUsuario(login);
+        // Si el usuario no existe o la contraseña no coincide se muestra una ventana emergente
         if (maestro == null || !password.equals(maestro.getPassword())) {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos",
                     "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+            // Si los datos son correctos, abre la ventana principal pasándole el usuario y cierra la ventana de login
             VentanaPrincipal principal = new VentanaPrincipal(maestro);
             dispose();
             principal.setVisible(true);
         }
     }//GEN-LAST:event_botonInicioSesionActionPerformed
 
+    /**
+     * Acción cuando se presiona el botón para crear un nuevo usuario. Abre una
+     * pantalla para registro de nuevos usuarios.
+     */
     private void botonCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearUsuarioActionPerformed
         new PantallaRegistro(this, true).setVisible(true);
     }//GEN-LAST:event_botonCrearUsuarioActionPerformed
 
+    /**
+     * Acción cuando se presiona la tecla Enter en el campo de nombre de
+     * usuario. Llama a la acción de inicio de sesión.
+     */
     private void campoNombreUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreUsuarioKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             botonInicioSesionActionPerformed(null);
         }
     }//GEN-LAST:event_campoNombreUsuarioKeyPressed
 
+    /**
+     * Acción cuando se presiona la tecla Enter en el campo de contraseña.
+     * Llama a la acción de inicio de sesión.
+     */
     private void campoContraseñaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoContraseñaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             botonInicioSesionActionPerformed(null);

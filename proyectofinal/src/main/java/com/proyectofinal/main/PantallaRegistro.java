@@ -1,16 +1,13 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Esta clase representa la ventana de registro de un nuevo usuario.
+ * Si los datos son correctos, se crea un nuevo usuario y se vuelve a la pantalla de login.
  */
 package com.proyectofinal.main;
 
 import com.proyectofinal.datos.DAOMaestros;
 import com.proyectofinal.entidades.Maestro;
-import java.awt.Image;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -144,15 +141,19 @@ public class PantallaRegistro extends javax.swing.JDialog {
 
     private void botonCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearCuentaActionPerformed
         DAOMaestros dm = new DAOMaestros();
+        // Verificación de que todos los campos están completos. Si no, muestra una ventana emergente.
         if (campoNombre.getText().trim().isEmpty() | campoNombreUsuario.getText().trim().isEmpty() | campoContraseña.getText().trim().isEmpty() | campoRepiteContraseña.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe rellenar todos los campos",
                     "Error", JOptionPane.ERROR_MESSAGE);
+        // Verificación de que las contraseñas coinciden
         } else if (!campoContraseña.getText().equals(campoRepiteContraseña.getText())) {
             JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden",
                     "Error", JOptionPane.ERROR_MESSAGE);
+        // Verificación de que el nombre de usuario no exista en la base de datos
         } else if (dm.comprobarUsuario(campoNombreUsuario.getText().trim())) {
             JOptionPane.showMessageDialog(this, "El usuario ya existe",
                     "Error", JOptionPane.ERROR_MESSAGE);
+        // Si todo está correcto, se crea un nuevo usuario
         } else {
             dm.crearUsuario(new Maestro(campoNombreUsuario.getText(), campoContraseña.getText(), campoNombre.getText()));
             JOptionPane.showMessageDialog(this, "Usuario creado correctamente",
