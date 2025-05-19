@@ -3,7 +3,6 @@
  */
 package com.proyectofinal.entidades;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
