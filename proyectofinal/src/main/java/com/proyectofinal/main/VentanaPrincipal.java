@@ -9,10 +9,14 @@ import com.proyectofinal.entidades.Actividad;
 import com.proyectofinal.entidades.Asignatura;
 import com.proyectofinal.entidades.Maestro;
 import com.proyectofinal.entidades.Tema;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -168,10 +172,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         tablaActividades = new javax.swing.JTable();
         etiquetaFiltrarPorMes = new javax.swing.JLabel();
         etiquetaAsignarFecha1 = new javax.swing.JLabel();
-        botonExportar = new javax.swing.JButton();
+        botonExportarPDF = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         botonFiltrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        botonExportarTxt = new javax.swing.JButton();
         pestañaAlumnos = new javax.swing.JPanel();
         etiquetaBienvenida2 = new javax.swing.JLabel();
 
@@ -371,11 +376,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        etiquetaMes.setText("Mes");
         etiquetaMes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        etiquetaMes.setText("Mes");
 
-        jLabel2.setText("Fecha");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Fecha");
 
         botonAsignarFecha.setText("Asignar fecha");
         botonAsignarFecha.addActionListener(new java.awt.event.ActionListener() {
@@ -405,23 +410,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tablaActividades);
 
-        etiquetaFiltrarPorMes.setText("Filtrar actividades por mes");
         etiquetaFiltrarPorMes.setBackground(new java.awt.Color(255, 255, 255));
         etiquetaFiltrarPorMes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        etiquetaFiltrarPorMes.setText("Filtrar actividades por mes");
 
-        etiquetaAsignarFecha1.setText("Asignar fecha a una actividad");
         etiquetaAsignarFecha1.setBackground(new java.awt.Color(255, 255, 255));
         etiquetaAsignarFecha1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        etiquetaAsignarFecha1.setText("Asignar fecha a una actividad");
 
-        botonExportar.setText("Exportar a PDF");
-        botonExportar.addActionListener(new java.awt.event.ActionListener() {
+        botonExportarPDF.setText("Exportar a PDF");
+        botonExportarPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonExportarActionPerformed(evt);
+                botonExportarPDFActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Actividad");
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Actividad");
 
         botonFiltrar.setText("Filtrar");
         botonFiltrar.addActionListener(new java.awt.event.ActionListener() {
@@ -432,12 +437,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jLabel1.setText("© 2025 Educa+. Versión 0.1 (Beta). Todos los derechos reservados.");
 
+        botonExportarTxt.setText("Exportar a .txt");
+        botonExportarTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonExportarTxtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pestañaCalendarioLayout = new javax.swing.GroupLayout(pestañaCalendario);
         pestañaCalendario.setLayout(pestañaCalendarioLayout);
         pestañaCalendarioLayout.setHorizontalGroup(
             pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(etiquetaAsignarFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,36 +458,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(etiquetaBienvenida1, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                        .addGap(40, 40, 40)
                         .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(28, 28, 28)
-                                .addComponent(desplegableActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(141, 141, 141)
-                                .addComponent(etiquetaMes, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(48, 48, 48)
+                                .addGap(40, 40, 40)
                                 .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                                        .addGap(59, 59, 59)
-                                        .addComponent(botonAsignarFecha))
-                                    .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jLabel3)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(desplegableActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(141, 141, 141)
+                                        .addComponent(etiquetaMes, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(48, 48, 48)
+                                        .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                                                .addGap(59, 59, 59)
+                                                .addComponent(botonAsignarFecha))
+                                            .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                                .addGap(177, 177, 177)
+                                .addComponent(asignarFecha)))
                         .addGap(18, 18, 18)
                         .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pestañaCalendarioLayout.createSequentialGroup()
                                 .addComponent(desplegableMeses, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
-                                .addComponent(botonFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(botonFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                                    .addComponent(botonExportarTxt)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botonExportarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                .addGap(177, 177, 177)
-                .addComponent(asignarFecha)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(169, 169, 169))
         );
         pestañaCalendarioLayout.setVerticalGroup(
             pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -507,11 +523,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20)
-                .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonExportar)
-                    .addComponent(asignarFecha))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(asignarFecha))
+                    .addGroup(pestañaCalendarioLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(botonExportarPDF)
+                            .addComponent(botonExportarTxt))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
                 .addComponent(jLabel1))
         );
 
@@ -751,7 +772,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botonAsignarFechaActionPerformed
 
-    private void botonExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarActionPerformed
+    private void botonExportarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarPDFActionPerformed
         try {
             List<Actividad> actividadesPDF = new ArrayList<>();
             int mesSeleccionado = -1;
@@ -815,7 +836,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-    }//GEN-LAST:event_botonExportarActionPerformed
+    }//GEN-LAST:event_botonExportarPDFActionPerformed
 
     private void botonFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFiltrarActionPerformed
 
@@ -854,6 +875,48 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
          */
     }//GEN-LAST:event_botonFiltrarActionPerformed
+
+    private void botonExportarTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarTxtActionPerformed
+
+        List<Actividad> actividadesTXT = new ArrayList();
+        int mesSeleccionado = -1;
+
+        for (Month mes : Month.values()) {
+            if (mes.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()).equals(desplegableMeses.getSelectedItem())) {
+                mesSeleccionado = mes.getValue();
+                break;
+            }
+        }
+
+        final int mesSeleccionadoFinal = mesSeleccionado;
+
+        actividadesTXT = mapaActividades.values().stream()
+                .filter(a -> a.getFecha() != null && a.getFecha().getMonthValue() == mesSeleccionadoFinal)
+                .toList();
+        if (!actividadesTXT.isEmpty()) {
+            try {
+                BufferedWriter escritor = new BufferedWriter(new FileWriter("actividadesMes.txt"));
+                escritor.write("Actividades del mes de " + desplegableMeses.getSelectedItem() + "\n\n");
+                for (Actividad a : actividadesTXT) {
+                    escritor.write("Nombre: " + a.getNombre() + "\n");
+                    escritor.write("Descripción: " + a.getDescripcion() + "\n");
+                    escritor.write("Fecha: " + a.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n");
+                    escritor.write("Objetivos: \n" + "-" + a.getObjetivos() + "\n\n");
+                }
+                escritor.close();
+                JOptionPane.showMessageDialog(this, "Exportación realizada correctamente",
+                        "Actualización", JOptionPane.INFORMATION_MESSAGE);
+            } catch (FileNotFoundException e) {
+                System.out.println("No se ha podido abrir el fichero");
+            } catch (IOException e) {
+                System.out.println("Error al leer el fichero: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay actividades para exportar",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_botonExportarTxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -896,7 +959,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton añadirAsignatura;
     private javax.swing.JButton añadirTema;
     private javax.swing.JButton botonAsignarFecha;
-    private javax.swing.JButton botonExportar;
+    private javax.swing.JButton botonExportarPDF;
+    private javax.swing.JButton botonExportarTxt;
     private javax.swing.JButton botonFiltrar;
     private com.github.lgooddatepicker.components.CalendarPanel calendario;
     private javax.swing.JComboBox<Object> desplegableActividades;
