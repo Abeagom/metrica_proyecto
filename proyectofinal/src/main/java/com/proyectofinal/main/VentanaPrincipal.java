@@ -113,7 +113,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     /**
-     * Configura los botones al iniciar la ventana.
+     * Configura los botones y etiquetas al iniciar la ventana.
      */
     private void botonesInicial() {
         editarAsignatura.setEnabled(false);
