@@ -48,8 +48,9 @@ CREATE TABLE alumno_maestro (
     FOREIGN KEY (login_maestro) REFERENCES maestros(login)
 );
 
-DROP USER IF EXISTS 'educaplus'@'localhost';
-CREATE USER 'educaplus'@'localhost' IDENTIFIED BY 'educaplus';
-GRANT ALL PRIVILEGES ON `educaplus`.* TO 'educaplus'@'localhost' WITH GRANT OPTION;
+DROP USER IF EXISTS 'educa'@'localhost';
+CREATE USER 'educa'@'localhost' IDENTIFIED BY 'educa';
+GRANT ALL PRIVILEGES ON `educaplus`.* TO 'educa'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
 
