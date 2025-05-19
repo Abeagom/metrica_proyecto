@@ -115,9 +115,9 @@ public class MaestroTest {
     @Test
     @DisplayName("Test del método hashCode")
     public void testHashCode() {
-        Asignatura a1 = new Asignatura(1, "Lengua", m);
-        Asignatura a2 = new Asignatura(1, "Lengua", m);
-        assertEquals(a1.hashCode(), a2.hashCode(), "Los hashCodes no coinciden");
+        Maestro m1 = new Maestro("usuPrueba2", "usuPassword2", "prueba2");
+        Maestro m2 = new Maestro("usuPrueba2", "usuPassword2", "prueba2");
+        assertEquals(m1.hashCode(), m2.hashCode(), "Los hashCodes no coinciden");
     }
 
     /**
