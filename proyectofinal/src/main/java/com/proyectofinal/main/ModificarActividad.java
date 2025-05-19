@@ -91,10 +91,7 @@ public class ModificarActividad extends javax.swing.JDialog {
         if (campoNombreActividad.getText().isBlank() || campoNombreActividad.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe introducir un nombre",
                     "Error", JOptionPane.WARNING_MESSAGE);
-        } else if (tema.getActividades().stream().anyMatch((a) -> a.getNombre().trim().equalsIgnoreCase(campoNombreActividad.getText().trim()))) {
-            JOptionPane.showMessageDialog(this, "El nombre de la actividad ya existe",
-                    "Error", JOptionPane.WARNING_MESSAGE);
-        } else if (campoDescripcion.getText().isBlank() || campoDescripcion.getText().isEmpty()) {
+        }else if (campoDescripcion.getText().isBlank() || campoDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe introducir una descripción",
                     "Error", JOptionPane.WARNING_MESSAGE);
         } else if (CampoObjetivos.getText().isBlank() || CampoObjetivos.getText().isEmpty()) {

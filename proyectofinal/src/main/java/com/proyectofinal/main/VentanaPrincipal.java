@@ -70,7 +70,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // Limpia modeloComboBoxActividades y el map antes de agregar elementos
         modeloComboBoxActividades.removeAllElements();
         mapaActividades.clear();
-        
 
         // Recorre las asignaturas y temas y añade las actividades a modeloComboBoxActividades
         for (Asignatura a : m.getAsignaturas()) {
@@ -739,7 +738,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 DAOActividades da = new DAOActividades();
                 da.editarActividad(calendario.getSelectedDate(), mapaActividades.get(desplegableActividades.getSelectedItem()).getId());
                 JOptionPane.showMessageDialog(this, "Fecha asignada correctamente",
-                        "Actualización", JOptionPane.OK_OPTION);
+                        "Actualización", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Debe escoger una fecha",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -754,70 +753,68 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void botonExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarActionPerformed
         try {
-            List<Actividad> actividadesPDF = new ArrayList();
+            List<Actividad> actividadesPDF = new ArrayList<>();
             int mesSeleccionado = -1;
+
             for (Month mes : Month.values()) {
                 if (mes.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()).equals(desplegableMeses.getSelectedItem())) {
                     mesSeleccionado = mes.getValue();
+                    break;
                 }
             }
+
             final int mesSeleccionadoFinal = mesSeleccionado;
+
             actividadesPDF = mapaActividades.values().stream()
-                    .filter(a -> a.getFecha() != null && a.getFecha()
-                    .getMonthValue() == mesSeleccionadoFinal)
+                    .filter(a -> a.getFecha() != null && a.getFecha().getMonthValue() == mesSeleccionadoFinal)
                     .toList();
+
             PDDocument documentoActividades = new PDDocument();
-            // Crear una nueva página
-            PDPage page = new PDPage();
-            // Preparar el flujo de contenido para la página
-            PDPageContentStream contentStream = new PDPageContentStream(documentoActividades, page);
-            // Comenzar a escribir en el documento
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
-            contentStream.newLineAtOffset(100, 700); // Establecer la posición (X, Y)
-            int contador = 0;
+
             for (Actividad a : actividadesPDF) {
+                PDPage page = new PDPage();
                 documentoActividades.addPage(page);
-                if (contador == 0) {
-                    contentStream.showText("Actividades de " + desplegableMeses.getSelectedItem());
-                }
+
+                PDPageContentStream contentStream = new PDPageContentStream(documentoActividades, page);
+                contentStream.beginText();
+
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+                contentStream.newLineAtOffset(100, 700);
+                contentStream.showText("Actividad de " + desplegableMeses.getSelectedItem());
+
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
                 contentStream.newLineAtOffset(0, -40);
-                // Escribir texto
                 contentStream.showText("-Actividad: ");
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.setFont(PDType1Font.HELVETICA, 16);
                 contentStream.showText(a.getNombre());
+
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
                 contentStream.newLineAtOffset(0, -40);
                 contentStream.showText("-Descripción: ");
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.setFont(PDType1Font.HELVETICA, 16);
                 contentStream.showText(a.getDescripcion());
+
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
                 contentStream.newLineAtOffset(0, -40);
                 contentStream.showText("-Objetivos: ");
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.setFont(PDType1Font.HELVETICA, 16);
                 contentStream.showText(a.getObjetivos());
-                contador++;
+
+                contentStream.endText();
+                contentStream.close();
             }
-            // Terminar de escribir
-            contentStream.endText();
 
-            // Cerrar el flujo de contenido
-            contentStream.close();
-
-            // Guardar el documento en un archivo
             documentoActividades.save("ejemplo.pdf");
-
-            // Cerrar el documento
             documentoActividades.close();
 
             System.out.println("PDF creado con éxito.");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }//GEN-LAST:event_botonExportarActionPerformed
 
     private void botonFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFiltrarActionPerformed
