@@ -124,4 +124,19 @@ public class DAOMaestros {
         return existe;
     }
 
+    public void EliminarUsuario(Maestro m) {
+        Connection conn = null;
+        try {
+            conn = conectarBD();
+            PreparedStatement pst = conn.prepareStatement(
+                    "delete from maestros where login=?");
+            pst.setString(1, m.getLogin());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("eliminarUsuario:" + e.getMessage());
+        } finally {
+            desconectarBD(conn);
+        }
+    }
+
 }

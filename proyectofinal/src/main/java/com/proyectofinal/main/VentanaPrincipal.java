@@ -59,7 +59,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.m = m;
         initComponents();
         asignarModelos();
-        modeloListaAsignaturas.addAll(m.getAsignaturas());
         rellenarDesplegable();
         rellenarMeses();
         botonesInicial();
@@ -113,6 +112,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         listaActividades.setModel(modeloListaActividades);
         modeloComboBoxActividades = new DefaultComboBoxModel<>();
         desplegableActividades.setModel(modeloComboBoxActividades);
+        modeloListaAsignaturas.addAll(m.getAsignaturas());
     }
 
     /**
@@ -179,6 +179,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonExportarTxt = new javax.swing.JButton();
         pestañaAlumnos = new javax.swing.JPanel();
         etiquetaBienvenida2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -376,11 +377,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        etiquetaMes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         etiquetaMes.setText("Mes");
+        etiquetaMes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Fecha");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         botonAsignarFecha.setText("Asignar fecha");
         botonAsignarFecha.addActionListener(new java.awt.event.ActionListener() {
@@ -410,13 +411,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tablaActividades);
 
+        etiquetaFiltrarPorMes.setText("Filtrar actividades por mes");
         etiquetaFiltrarPorMes.setBackground(new java.awt.Color(255, 255, 255));
         etiquetaFiltrarPorMes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        etiquetaFiltrarPorMes.setText("Filtrar actividades por mes");
 
+        etiquetaAsignarFecha1.setText("Asignar fecha a una actividad");
         etiquetaAsignarFecha1.setBackground(new java.awt.Color(255, 255, 255));
         etiquetaAsignarFecha1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        etiquetaAsignarFecha1.setText("Asignar fecha a una actividad");
 
         botonExportarPDF.setText("Exportar a PDF");
         botonExportarPDF.addActionListener(new java.awt.event.ActionListener() {
@@ -425,8 +426,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Actividad");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         botonFiltrar.setText("Filtrar");
         botonFiltrar.addActionListener(new java.awt.event.ActionListener() {
@@ -542,6 +543,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         etiquetaBienvenida2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
 
+        jButton1.setText("Eliminar Usuario");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pestañaAlumnosLayout = new javax.swing.GroupLayout(pestañaAlumnos);
         pestañaAlumnos.setLayout(pestañaAlumnosLayout);
         pestañaAlumnosLayout.setHorizontalGroup(
@@ -549,13 +557,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(pestañaAlumnosLayout.createSequentialGroup()
                 .addComponent(etiquetaBienvenida2, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 102, Short.MAX_VALUE))
+            .addGroup(pestañaAlumnosLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pestañaAlumnosLayout.setVerticalGroup(
             pestañaAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pestañaAlumnosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(etiquetaBienvenida2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(572, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(543, Short.MAX_VALUE))
         );
 
         pestañas.addTab("Alumnos", pestañaAlumnos);
@@ -613,7 +627,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             añadirActividad.setEnabled(false);
             editarActividad.setEnabled(false);
             eliminarActividad.setEnabled(false);
-        }else{
+        } else {
             añadirTema.setEnabled(false);
         }
     }//GEN-LAST:event_listaAsignaturasMouseClicked
@@ -832,8 +846,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
             documentoActividades.save("ejemplo.pdf");
             documentoActividades.close();
-
-            System.out.println("PDF creado con éxito.");
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -920,6 +933,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_botonExportarTxtActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        EliminarUsuario eliminarUsuario = new EliminarUsuario(this, true, m);
+        eliminarUsuario.setVisible(true);
+        if(eliminarUsuario.esEliminado()){
+            this.dispose();
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -980,6 +1002,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel etiquetaCopyright;
     private javax.swing.JLabel etiquetaFiltrarPorMes;
     private javax.swing.JLabel etiquetaMes;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
