@@ -1,15 +1,16 @@
 Actividades del mes de mayo
 
-Nombre: hola
-Descripción: hola	ho
-Fecha: 01/05/2025
+Nombre: Cálculos con números negativos
+Descripción: Hacer cálculos con números negativos
+Fecha: 15/05/2025
 Objetivos: 
--hola
+-1. Ayudar con los cálculos
+2. Ayudar con las matemáticas
 
-Nombre: hola2
-Descripción: hola
-Fecha: 01/05/2025
+Nombre: Sumas y restas
+Descripción: Sumas y restas con números
+Fecha: 15/05/2025
 Objetivos: 
--hola
-que tal
+-1. Ayudar a mejorar con el cálculo
+2. Ayudar con las matemáticas
 

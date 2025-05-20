@@ -179,10 +179,12 @@ public class ModificarActividad extends javax.swing.JDialog {
         });
 
         campoDescripcion.setColumns(20);
+        campoDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         campoDescripcion.setRows(5);
         jScrollPane1.setViewportView(campoDescripcion);
 
         CampoObjetivos.setColumns(20);
+        CampoObjetivos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         CampoObjetivos.setRows(5);
         jScrollPane2.setViewportView(CampoObjetivos);
 

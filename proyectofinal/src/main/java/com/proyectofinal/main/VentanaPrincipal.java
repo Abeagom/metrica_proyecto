@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +41,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private DefaultListModel<Asignatura> modeloListaAsignaturas = new DefaultListModel<>();
     private DefaultListModel<Tema> modeloListaTemas = new DefaultListModel<>();
     private DefaultListModel<Actividad> modeloListaActividades = new DefaultListModel<>();
-    private DefaultComboBoxModel<Object> modeloComboBoxActividades;
+    private DefaultComboBoxModel<String> modeloComboBoxActividades;
 
     // Mapa para almacenar las actividades
     private Map<String, Actividad> mapaActividades = new HashMap<>();
@@ -603,8 +602,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             añadirActividad.setEnabled(true);
             editarActividad.setEnabled(false);
             eliminarActividad.setEnabled(false);
-
-            // Muestra el nombre del usuario logueado en la interfaz
             modeloListaActividades.clear();
             modeloListaActividades.addAll(listaTemas.getSelectedValue().getActividades());
         }
@@ -916,7 +913,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     escritor.write("Nombre: " + a.getNombre() + "\n");
                     escritor.write("Descripción: " + a.getDescripcion() + "\n");
                     escritor.write("Fecha: " + a.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n");
-                    escritor.write("Objetivos: \n" + "-" + a.getObjetivos() + "\n\n");
+                    escritor.write("Objetivos: \n" + a.getObjetivos() + "\n\n");
                 }
                 escritor.close();
                 JOptionPane.showMessageDialog(this, "Exportación realizada correctamente",
@@ -987,7 +984,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonExportarTxt;
     private javax.swing.JButton botonFiltrar;
     private com.github.lgooddatepicker.components.CalendarPanel calendario;
-    private javax.swing.JComboBox<Object> desplegableActividades;
+    private javax.swing.JComboBox<String> desplegableActividades;
     private javax.swing.JComboBox<String> desplegableMeses;
     private javax.swing.JButton editarActividad;
     private javax.swing.JButton editarAsignatura;
