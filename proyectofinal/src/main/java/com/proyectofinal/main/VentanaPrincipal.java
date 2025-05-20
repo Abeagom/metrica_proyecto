@@ -613,6 +613,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             añadirActividad.setEnabled(false);
             editarActividad.setEnabled(false);
             eliminarActividad.setEnabled(false);
+        }else{
+            añadirTema.setEnabled(false);
         }
     }//GEN-LAST:event_listaAsignaturasMouseClicked
 
