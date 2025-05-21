@@ -10,7 +10,7 @@ import java.time.LocalDate;
  *
  * @author al_12
  */
-public class Actividad {
+public class Actividad implements Comparable <Actividad>{
 
     private int id;
     private String nombre;
@@ -188,6 +188,11 @@ public class Actividad {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    @Override
+    public int compareTo(Actividad a) {
+        return this.getNombre().compareTo(a.getNombre());
     }
 
 }

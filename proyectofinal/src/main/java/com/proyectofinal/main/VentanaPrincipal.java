@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -74,9 +75,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mapaActividades.clear();
 
         // Recorre las asignaturas y temas y añade las actividades a modeloComboBoxActividades
+        Collections.sort(m.getAsignaturas());
         for (Asignatura a : m.getAsignaturas()) {
+            Collections.sort(a.getTemas());
             modeloComboBoxActividades.addElement("-" + a.getNombre());
             for (Tema t : a.getTemas()) {
+                Collections.sort(t.getActividades());
                 modeloComboBoxActividades.addElement("    -" + t.getNombre());
                 for (Actividad ac : t.getActividades()) {
                     // Clave para el mapa de actividades
@@ -111,6 +115,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         listaActividades.setModel(modeloListaActividades);
         modeloComboBoxActividades = new DefaultComboBoxModel<>();
         desplegableActividades.setModel(modeloComboBoxActividades);
+        Collections.sort(m.getAsignaturas());
         modeloListaAsignaturas.addAll(m.getAsignaturas());
     }
 
@@ -726,6 +731,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } else {
             new ModificarTema(this, true, listaAsignaturas.getSelectedValue(), VentanaPrincipal.Modo.AÑADIR).setVisible(true);
             modeloListaTemas.clear();
+            for(Asignatura a : m.getAsignaturas()){
+                Collections.sort(a.getTemas());
+            }
             modeloListaTemas.addAll(listaAsignaturas.getSelectedValue().getTemas());
             modeloListaActividades.clear();
         }
@@ -748,6 +756,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void añadirAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirAsignaturaActionPerformed
         new ModificarAsignatura(this, true, m, VentanaPrincipal.Modo.AÑADIR).setVisible(true);
         modeloListaAsignaturas.clear();
+        Collections.sort(m.getAsignaturas());
         modeloListaAsignaturas.addAll(m.getAsignaturas());
         modeloListaTemas.clear();
         modeloListaActividades.clear();
@@ -861,17 +870,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         final int mesSeleccionadoFinal = mesSeleccionado;
 
         // Crear el modelo con las columnas "Nombre" y "Fecha"
-        DefaultTableModel model = (DefaultTableModel) tablaActividades.getModel();
-        model.setColumnCount(0);  // Limpiar columnas anteriores
-        model.setColumnIdentifiers(new Object[]{"Nombre", "Fecha"});  // Establecer las columnas
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaActividades.getModel();
+        modeloTabla.setColumnCount(0);  // Limpiar columnas anteriores
+        modeloTabla.setColumnIdentifiers(new Object[]{"Nombre", "Fecha"});  // Establecer las columnas
 
         // Limpiar las filas existentes
-        model.setRowCount(0);
+        modeloTabla.setRowCount(0);
 
         mapaActividades.values().stream()
                 .filter(a -> a.getFecha() != null && a.getFecha().getMonthValue() == mesSeleccionadoFinal) // Filtrar solo si la fecha no es nula
+                .sorted((a1, a2) -> a1.getFecha().compareTo(a2.getFecha()))
                 .forEach(a -> {
-                    model.addRow(new Object[]{
+                    modeloTabla.addRow(new Object[]{
                         a.getNombre(),
                         a.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                     });

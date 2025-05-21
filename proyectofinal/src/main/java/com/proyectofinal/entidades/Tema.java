@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author al_12
  */
-public class Tema {
+public class Tema implements Comparable<Tema>{
 
     private int id;
     private String nombre;
@@ -146,6 +146,11 @@ public class Tema {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    @Override
+    public int compareTo(Tema t) {
+        return this.getNombre().compareTo(t.getNombre());
     }
 
 }

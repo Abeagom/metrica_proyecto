@@ -1,16 +1,8 @@
-Actividades del mes de mayo
+Actividades del mes de junio
 
-Nombre: Cálculos con números negativos
-Descripción: Hacer cálculos con números negativos
-Fecha: 15/05/2025
+Nombre: ac1
+Descripción: ac1
+Fecha: 12/06/2025
 Objetivos: 
--1. Ayudar con los cálculos
-2. Ayudar con las matemáticas
-
-Nombre: Sumas y restas
-Descripción: Sumas y restas con números
-Fecha: 15/05/2025
-Objetivos: 
--1. Ayudar a mejorar con el cálculo
-2. Ayudar con las matemáticas
+ac1
 

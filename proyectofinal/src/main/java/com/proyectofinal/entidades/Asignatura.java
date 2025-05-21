@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author al_12
  */
-public class Asignatura {
+public class Asignatura implements Comparable<Asignatura>{
 
     private int id;
     private String nombre;
@@ -146,6 +146,11 @@ public class Asignatura {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    @Override
+    public int compareTo(Asignatura a) {
+        return this.getNombre().compareTo(a.getNombre());
     }
 
 }
