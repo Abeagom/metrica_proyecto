@@ -1,5 +1,6 @@
 /*
- * Esta clase representa la ventana donde se realizan operaciones con Asignaturas
+ * Esta clase representa la ventana donde se realizan operaciones con Asignaturas.
+ * Dependiendo del valor del enum, se hará una operación u otra.
  */
 package com.proyectofinal.main;
 

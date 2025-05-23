@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ * Esta clase representa la ventana donde se puede eliminar un usuario.
+ * Tiene un atributo esEliminado que posteriormente será consultado por ventanaPrincipal.
  */
 package com.proyectofinal.main;
 

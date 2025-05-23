@@ -62,12 +62,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         rellenarDesplegable();
         rellenarMeses();
         botonesInicial();
+        //Boton de prueba para exportar en pdf. Actualmente escondido.
+        botonExportarPDF.setVisible(false);
 
     }
 
     /**
      * Rellena el desplegable de actividades de la pestaña Calendario con
-     * asignaturas, temas y actividades.
+     * asignaturas, temas y actividades. También crea un mapa con actividades
+     * para que se muestre con un formato concreto.
+     * Cada vez que se añade, edita o elimina algo, se llama a este método
      */
     private void rellenarDesplegable() {
         // Limpia modeloComboBoxActividades y el map antes de agregar elementos
@@ -170,20 +174,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         desplegableMeses = new javax.swing.JComboBox<>();
         asignarFecha = new javax.swing.JButton();
         etiquetaMes = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        etiquetaFecha = new javax.swing.JLabel();
         botonAsignarFecha = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaActividades = new javax.swing.JTable();
         etiquetaFiltrarPorMes = new javax.swing.JLabel();
         etiquetaAsignarFecha1 = new javax.swing.JLabel();
         botonExportarPDF = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        etiquetaActividad = new javax.swing.JLabel();
         botonFiltrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         botonExportarTxt = new javax.swing.JButton();
         pestañaAlumnos = new javax.swing.JPanel();
         etiquetaBienvenida2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        botonEliminarUsuario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -384,8 +388,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         etiquetaMes.setText("Mes");
         etiquetaMes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel2.setText("Fecha");
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        etiquetaFecha.setText("Fecha");
+        etiquetaFecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         botonAsignarFecha.setText("Asignar fecha");
         botonAsignarFecha.addActionListener(new java.awt.event.ActionListener() {
@@ -430,8 +434,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Actividad");
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        etiquetaActividad.setText("Actividad");
+        etiquetaActividad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         botonFiltrar.setText("Filtrar");
         botonFiltrar.addActionListener(new java.awt.event.ActionListener() {
@@ -468,13 +472,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                                 .addGap(40, 40, 40)
                                 .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                                        .addComponent(jLabel3)
+                                        .addComponent(etiquetaActividad)
                                         .addGap(28, 28, 28)
                                         .addComponent(desplegableActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(141, 141, 141)
                                         .addComponent(etiquetaMes, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
-                                        .addComponent(jLabel2)
+                                        .addComponent(etiquetaFecha)
                                         .addGap(48, 48, 48)
                                         .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(pestañaCalendarioLayout.createSequentialGroup()
@@ -508,7 +512,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(etiquetaFiltrarPorMes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
+                    .addComponent(etiquetaActividad)
                     .addComponent(desplegableActividades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(desplegableMeses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -517,7 +521,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(jLabel2))
+                        .addComponent(etiquetaFecha))
                     .addGroup(pestañaCalendarioLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(pestañaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -547,10 +551,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         etiquetaBienvenida2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
 
-        jButton1.setText("Eliminar Usuario");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botonEliminarUsuario.setText("Eliminar Usuario");
+        botonEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonEliminarUsuarioActionPerformed(evt);
             }
         });
 
@@ -563,7 +567,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(0, 102, Short.MAX_VALUE))
             .addGroup(pestañaAlumnosLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jButton1)
+                .addComponent(botonEliminarUsuario)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pestañaAlumnosLayout.setVerticalGroup(
@@ -572,11 +576,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(etiquetaBienvenida2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(botonEliminarUsuario)
                 .addContainerGap(543, Short.MAX_VALUE))
         );
 
-        pestañas.addTab("Alumnos", pestañaAlumnos);
+        pestañas.addTab("Eliminar usuario", pestañaAlumnos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -593,6 +597,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void listaActividadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaActividadesMouseClicked
+        //Posible mejora: Quizás es mejor usar isEmpty
         if (modeloListaActividades.size() > 0) {
             editarActividad.setEnabled(true);
             eliminarActividad.setEnabled(true);
@@ -601,6 +606,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_listaActividadesMouseClicked
 
     private void listaTemasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaTemasMouseClicked
+        //Posible mejora: Hacer métodos para activar y desactivar los distintos botones
         if (modeloListaTemas.size() > 0) {
             editarTema.setEnabled(true);
             eliminarTema.setEnabled(true);
@@ -617,6 +623,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_listaAsignaturasValueChanged
 
     private void listaAsignaturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaAsignaturasMouseClicked
+        //Si la lista de asignaturas tiene al menos un elemento, se configuran los distintos botones
         if (modeloListaAsignaturas.size() > 0) {
             editarAsignatura.setEnabled(true);
             eliminarAsignatura.setEnabled(true);
@@ -635,11 +642,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_listaAsignaturasMouseClicked
 
     private void eliminarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActividadActionPerformed
+        //Si no hay ninguna asignatura o tema seleccionados, lanza una ventana emergente
         if (listaTemas.getSelectedValue() == null) {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado ningún tema.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (listaActividades.getSelectedValue() == null) {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado ninguna actividad.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+            //Si todo está correcto, se abre una nueva ventana para modificar actividad pasándole un enum como modo (eliminar)
             new ModificarActividad(this, true, listaTemas.getSelectedValue(), listaActividades.getSelectedValue(), VentanaPrincipal.Modo.ELIMINAR).setVisible(true);
             modeloListaActividades.clear();
             modeloListaActividades.addAll(listaTemas.getSelectedValue().getActividades());
@@ -772,10 +781,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_desplegableMesesActionPerformed
 
     private void asignarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignarFechaActionPerformed
+        //Si en el desplegable de actividades no se elige una actividad, lanza una ventana emergente
         if (!(mapaActividades.get(desplegableActividades.getSelectedItem()) instanceof Actividad)) {
             JOptionPane.showMessageDialog(this, "Debe escoger una actividad",
                     "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+            //Si todo está correcto, se actualiza la fecha en el propio objeto Actividad y en la base de datos a través del DAO
             if (calendario.getSelectedDate() != null) {
                 mapaActividades.get(desplegableActividades.getSelectedItem()).setFecha(calendario.getSelectedDate());
                 DAOActividades da = new DAOActividades();
@@ -794,6 +805,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botonAsignarFechaActionPerformed
 
+    //Este botón está ocultado. Se prueba la exportación a PDF.
     private void botonExportarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarPDFActionPerformed
         try {
             List<Actividad> actividadesPDF = new ArrayList<>();
@@ -861,6 +873,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void botonFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFiltrarActionPerformed
 
+        //Conseguir el número del mes seleccionado
         int mesSeleccionado = -1;
         for (Month mes : Month.values()) {
             if (mes.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()).equals(desplegableMeses.getSelectedItem())) {
@@ -877,6 +890,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // Limpiar las filas existentes
         modeloTabla.setRowCount(0);
 
+        //A través de un stream se asigna a la tabla las actividades que cumplan el filtro
         mapaActividades.values().stream()
                 .filter(a -> a.getFecha() != null && a.getFecha().getMonthValue() == mesSeleccionadoFinal) // Filtrar solo si la fecha no es nula
                 .sorted((a1, a2) -> a1.getFecha().compareTo(a2.getFecha()))
@@ -886,20 +900,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         a.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                     });
                 });
-
-        /*
-        // Añadir las actividades a la tabla
-        for (Actividad actividad : mapaActividades.values()) {
-            model.addRow(new Object[]{
-                actividad.getNombre(),
-                (actividad.getFecha() != null) ? actividad.getFecha().toString() : "Sin fecha"
-            });
-        }
-         */
     }//GEN-LAST:event_botonFiltrarActionPerformed
 
     private void botonExportarTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExportarTxtActionPerformed
-
+        //Método para exportar a txt
         List<Actividad> actividadesTXT = new ArrayList();
         int mesSeleccionado = -1;
 
@@ -940,14 +944,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_botonExportarTxtActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarUsuarioActionPerformed
+        //Si el usuario pulsa el botón eliminarUsuario, se crea una ventana y posteriormente se verificará si ha sido eliminado
         EliminarUsuario eliminarUsuario = new EliminarUsuario(this, true, m);
         eliminarUsuario.setVisible(true);
         if(eliminarUsuario.esEliminado()){
             this.dispose();
             
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botonEliminarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -990,6 +995,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton añadirAsignatura;
     private javax.swing.JButton añadirTema;
     private javax.swing.JButton botonAsignarFecha;
+    private javax.swing.JButton botonEliminarUsuario;
     private javax.swing.JButton botonExportarPDF;
     private javax.swing.JButton botonExportarTxt;
     private javax.swing.JButton botonFiltrar;
@@ -1002,17 +1008,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton eliminarActividad;
     private javax.swing.JButton eliminarAsignatura;
     private javax.swing.JButton eliminarTema;
+    private javax.swing.JLabel etiquetaActividad;
     private javax.swing.JLabel etiquetaAsignarFecha1;
     private javax.swing.JLabel etiquetaBienvenida;
     private javax.swing.JLabel etiquetaBienvenida1;
     private javax.swing.JLabel etiquetaBienvenida2;
     private javax.swing.JLabel etiquetaCopyright;
+    private javax.swing.JLabel etiquetaFecha;
     private javax.swing.JLabel etiquetaFiltrarPorMes;
     private javax.swing.JLabel etiquetaMes;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
